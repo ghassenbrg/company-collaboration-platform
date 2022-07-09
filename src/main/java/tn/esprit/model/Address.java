@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "address")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class Address extends BaseEntity {
+public abstract class Address extends BaseEntity {
 
 	private static final long serialVersionUID = 6557481420641980883L;
 

@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -37,7 +39,8 @@ import tn.esprit.model.BaseEntity;
 @NoArgsConstructor
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }),
 		@UniqueConstraint(columnNames = { "email" }) })
-public class User extends BaseEntity {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public abstract class User extends BaseEntity {
 
 	private static final long serialVersionUID = 8628262968737538116L;
 

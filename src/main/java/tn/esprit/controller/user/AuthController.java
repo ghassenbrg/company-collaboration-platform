@@ -22,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import tn.esprit.exception.ApiException;
 import tn.esprit.exception.AppException;
+import tn.esprit.model.user.Employee;
 import tn.esprit.model.user.Role;
 import tn.esprit.model.user.RoleName;
 import tn.esprit.model.user.User;
@@ -81,7 +82,7 @@ public class AuthController {
 			throw new ApiException(HttpStatus.BAD_REQUEST, "Email is already taken");
 		}
 
-		User user = new User(signUpRequest.getFirstName().toLowerCase(), signUpRequest.getLastName().toLowerCase(),
+		Employee user = new Employee(signUpRequest.getFirstName().toLowerCase(), signUpRequest.getLastName().toLowerCase(),
 				signUpRequest.getUsername().toLowerCase(), signUpRequest.getEmail().toLowerCase(),
 				passwordEncoder.encode(signUpRequest.getPassword()));
 
