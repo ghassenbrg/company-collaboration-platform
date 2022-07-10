@@ -102,7 +102,7 @@
 
 ![Class diagram](/images/class-diagram.png)
 
-##### 1. Use case diagram :
+##### 2. Use case diagram :
 
 ![Use case diagram](/images/use-case-diagram.png)
 
