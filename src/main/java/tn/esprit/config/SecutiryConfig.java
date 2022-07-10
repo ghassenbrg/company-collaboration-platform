@@ -51,9 +51,16 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/api/**").permitAll().antMatchers(HttpMethod.POST, "/api/auth/**")
-				.permitAll().antMatchers(HttpMethod.GET, "/api/users/checkUsernameAvailability",
+				.permitAll()
+				.antMatchers(HttpMethod.GET, "/api/users/checkUsernameAvailability",
 						"/api/users/checkEmailAvailability")
-				.permitAll().anyRequest().authenticated();
+				.permitAll().antMatchers("/v2/api-docs").permitAll() // development mode
+				.antMatchers("/configuration/ui").permitAll() // development mode
+				.antMatchers("/swagger-resources/**").permitAll() // development mode
+				.antMatchers("/configuration/security").permitAll() // development mode
+				.antMatchers("/swagger-ui/**").permitAll() // development mode
+				.antMatchers("/webjars/**").permitAll() // development mode
+				.anyRequest().authenticated();
 
 		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

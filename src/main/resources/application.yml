@@ -2,7 +2,10 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/company-collaboration-platform?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password: 
+    password:
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher 
   jpa:
     hibernate:
       ddl-auto: create-drop
