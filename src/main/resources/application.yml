@@ -17,3 +17,6 @@ app:
 
 server:
   port : 8081
+  
+cors:
+  allowedOrings: '*'
