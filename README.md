@@ -20,7 +20,6 @@
 
 ![Physical architecture](/images/tiers-architecture.png)
 
-<br />
 
 #### II. Functional & non functional requirements
 
