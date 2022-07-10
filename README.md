@@ -11,8 +11,7 @@
 
 ![Logical architecture](/images/layers-architecture.jpg)
 
-<br />
-##### 2. Physical architecture : Tiers Architecture<br />
+##### 2. Physical architecture : Tiers Architecture
 - Presentation tier : The presentation tier is the user interface and communication layer of the application.<br />
 - Application tier : The application tier, also known as the logic tier or middle tier, is the heart of the application.<br />
 - Data tier : The data tier, sometimes called database tier, data access tier or back-end, is where the information processed by the application is stored and managed.
