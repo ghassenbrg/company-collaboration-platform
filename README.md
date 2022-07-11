@@ -1,5 +1,6 @@
 # Company Collaboration Platform
 ## Esprit PIDEV: Company Collaboration Platform
+<input type="image" name="ctl00$ImageButton1" id="ImageButton1" class="img-responsive " src="../Contents/Img/logo.png">
 ### Design and architectural choice :
 #### I. Choice and proposal of architecture
 ##### 1. Logical architecture : Layered architecture
