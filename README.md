@@ -28,7 +28,6 @@
 
 - Module - User Management :<br />
 ● Registration<br />
-● Registration with linkedIn account<br />
 ● Authentication<br />
 ● Profile Completion<br />
 ● Synchronization of LinkedIn information<br />
