@@ -10,7 +10,7 @@
 - Service Layer : This is the place where you should put your complex business logic which involved Multiple unconnected (not child - parent) domain models. These will be reused in Web Controllers and Rest API Controllers.<br />
 - Controllers : Controllers can be categorized in two, namely: Web Controllers, and REST Controllers. No business logic should be implemented in this layer because the same logic can be required to call in Web as well as in API level.<br />
 
-![Logical architecture](/images/layers-architecture.jpg)
+![Logical architecture](/images/layers-architecture.png)
 
 ##### 2. Physical architecture : Tiers Architecture
 - Presentation tier : The presentation tier is the user interface and communication layer of the application.<br />
