@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +37,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Override
 	@Transactional
 	public void onApplicationEvent(final ContextRefreshedEvent event) {
@@ -55,7 +59,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			String username = faker.name().username();
 			Employee employee = new Employee(faker.name().firstName(), faker.name().lastName(),
 					username.length() > 15 ? username.substring(0, 14) : username, faker.internet().emailAddress(),
-					"123456");
+					passwordEncoder.encode("123456"));
 
 			Geo geo = new Geo(String.valueOf(faker.random().nextInt(1, 10)),
 					String.valueOf(faker.random().nextInt(1, 10)));
