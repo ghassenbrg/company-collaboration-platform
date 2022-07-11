@@ -60,7 +60,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			Employee employee = new Employee(faker.name().firstName(), faker.name().lastName(),
 					username.length() > 15 ? username.substring(0, 14) : username, faker.internet().emailAddress(),
 					passwordEncoder.encode("123456"));
-
 			Geo geo = new Geo(String.valueOf(faker.random().nextInt(1, 10)),
 					String.valueOf(faker.random().nextInt(1, 10)));
 			UserAddress userAddress = new UserAddress(faker.address().streetAddress(), faker.address().city(),
