@@ -9,6 +9,11 @@ import tn.esprit.model.partner.Offre;
 import tn.esprit.repository.partner.OffreRepository;
 import tn.esprit.service.partner.OffreService;
 
+/**
+ * 
+ * @author Mazen Aissa
+ *
+ */
 @RequiredArgsConstructor
 @Service
 public class OffreServiceImpl implements OffreService {

@@ -2,7 +2,9 @@ package tn.esprit.config;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -18,12 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.javafaker.Faker;
 
 import tn.esprit.model.Geo;
+import tn.esprit.model.partner.Collaboration;
+import tn.esprit.model.partner.Offre;
 import tn.esprit.model.partner.Partner;
 import tn.esprit.model.user.Admin;
 import tn.esprit.model.user.Employee;
 import tn.esprit.model.user.Role;
 import tn.esprit.model.user.RoleName;
 import tn.esprit.model.user.UserAddress;
+import tn.esprit.repository.partner.CollaborationRepository;
+import tn.esprit.repository.partner.OffreRepository;
 import tn.esprit.repository.partner.PartnerRepository;
 import tn.esprit.repository.user.RoleRepository;
 import tn.esprit.repository.user.UserRepository;
@@ -32,6 +38,7 @@ import tn.esprit.service.user.CustomUserDetailsService;
 /**
  * 
  * @author Mohamed Dhia Hachem
+ * @author Mazen Aissa
  *
  */
 
@@ -48,6 +55,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 	@Autowired
 	private PartnerRepository partnerRepository;
+	
+	@Autowired
+	private CollaborationRepository collaborationRepository;
+	
+	@Autowired
+	private OffreRepository offreRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -84,8 +97,27 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		
 		for (int i = 0; i < 15; i++) {
 			Partner p = new Partner();
+			Collaboration c = new Collaboration();
+			Offre o = new Offre();
 			p.setCompanyName(faker.company().name());
+			c.setTitle(faker.lorem().sentence(15));
+			c.setDescription(faker.lorem().sentence(25));
+			c.setStartDate(faker.date().birthday());
+			c.setEndDate(DateUtils.addYears(c.getStartDate(), 1));
+			c.setPartner(p);
 			partnerRepository.save(p);
+			o.setTitle(faker.lorem().sentence(15));
+			o.setDescription(faker.lorem().sentence(25));
+			o.setPartner(p);
+			o.setStartDate(faker.date().birthday());
+			o.setEndDate(DateUtils.addMonths(o.getStartDate(), 1));
+			double x = (Math.round(ThreadLocalRandom.current().nextDouble(1,50) * 100d) / 100d);
+			if((i%2)==0)
+				o.setPrice(x);
+			else
+				o.setRemise((float)x);
+			collaborationRepository.save(c);
+			offreRepository.save(o);
 		}
 		
 		for (int i = 0; i < 100; i++) {

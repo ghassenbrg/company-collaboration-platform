@@ -10,6 +10,11 @@ import tn.esprit.model.partner.Partner;
 import tn.esprit.repository.partner.PartnerRepository;
 import tn.esprit.service.partner.PartnerService;
 
+/**
+ * 
+ * @author Mazen Aissa
+ *
+ */
 @RequiredArgsConstructor
 @Service
 public class PartnerServiceImpl implements PartnerService {

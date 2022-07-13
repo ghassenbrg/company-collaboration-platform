@@ -9,6 +9,11 @@ import tn.esprit.model.partner.Collaboration;
 import tn.esprit.repository.partner.CollaborationRepository;
 import tn.esprit.service.partner.CollaborationService;
 
+/**
+ * 
+ * @author Mazen Aissa
+ *
+ */
 @RequiredArgsConstructor
 @Service
 public class CollaborationServiceImpl implements CollaborationService {

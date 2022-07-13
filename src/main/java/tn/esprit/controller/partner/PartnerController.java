@@ -23,6 +23,11 @@ import tn.esprit.payload.ApiResponse;
 import tn.esprit.payload.PartnerDTO;
 import tn.esprit.service.partner.PartnerService;
 
+/**
+ * 
+ * @author Mazen Aissa
+ *
+ */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/partners")

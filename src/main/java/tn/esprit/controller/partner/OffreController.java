@@ -28,6 +28,11 @@ import tn.esprit.payload.OffreDTO;
 import tn.esprit.service.partner.OffreService;
 import tn.esprit.service.partner.PartnerService;
 
+/**
+ * 
+ * @author Mazen Aissa
+ *
+ */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/offres")

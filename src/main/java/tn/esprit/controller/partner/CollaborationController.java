@@ -28,6 +28,11 @@ import tn.esprit.payload.CollaborationDTO;
 import tn.esprit.service.partner.CollaborationService;
 import tn.esprit.service.partner.PartnerService;
 
+/**
+ * 
+ * @author Mazen Aissa
+ *
+ */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/collaborations")
