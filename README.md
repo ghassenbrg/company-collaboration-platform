@@ -32,15 +32,15 @@
 ● Profile Completion<br />
 ● Synchronization of LinkedIn information<br />
 
-- Module - Event/Activity Management :<br />
-● CRUD events (create event, join event, rate an event).<br />
+- Module - Event Management :<br />
+● CRUD events (create event, update event, view event details, cancel an event).<br />
+● Invite participants.<br />
 ● Accept/deny a request to join an event.<br />
-● Participate in events/activities.<br />
-● Rate and comment on an event / activity.<br />
+● Participate in events.<br />
+● Rate and comment on an event.<br />
 ● Find colleagues who share the same interests.<br />
-● Filter by apartment / office.<br />
-● Management of subscriptions.<br />
-● Add an activity to favorites.<br />
+● Filter by category, type, ...<br />
+● Add an event to favorites.<br />
 
 - Module - Forum :<br />
 ● Professional social network.<br />
