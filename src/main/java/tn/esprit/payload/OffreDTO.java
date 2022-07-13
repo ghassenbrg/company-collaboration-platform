@@ -1,19 +1,18 @@
 package tn.esprit.payload;
 
 import java.util.Date;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tn.esprit.model.partner.Reservation;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class OffreDTO {
+	private Long id;
 	private String title;
 	private String description;
 	private Double price;
