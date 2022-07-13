@@ -33,7 +33,6 @@ public class Evaluation extends BaseEntity {
 	private float rating;
 
 	@Column(name = "comment")
-	@NotBlank
 	@Size(min = 10, message = "Comment body must be minimum 10 characters")
 	private String comment;
 

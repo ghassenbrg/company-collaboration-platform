@@ -34,6 +34,6 @@ public class Badges extends BaseEntity {
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "employee_badges", joinColumns = @JoinColumn(name = "badge_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
-	private List<Employee> posts;
+	private List<Employee> employees;
 
 }
