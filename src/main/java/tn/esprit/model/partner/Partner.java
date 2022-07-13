@@ -1,10 +1,15 @@
 package tn.esprit.model.partner;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,5 +28,15 @@ public class Partner extends BaseEntity {
 	@Column(name = "company_name")
 	@NotBlank
 	private String companyName;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "partner", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PartnerRating> ratings;
+	
+	@OneToMany(mappedBy = "partner", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Offre> offres;
+	
+	@OneToMany(mappedBy = "partner", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Collaboration> collaborations;
 
 }

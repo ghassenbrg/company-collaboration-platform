@@ -50,7 +50,7 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/api/**").permitAll().antMatchers(HttpMethod.POST, "/api/auth/**")
+				.antMatchers(HttpMethod.POST, "/api/auth/**")
 				.permitAll()
 				.antMatchers(HttpMethod.GET, "/api/users/checkUsernameAvailability",
 						"/api/users/checkEmailAvailability")

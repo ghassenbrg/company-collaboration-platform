@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.javafaker.Faker;
 
 import tn.esprit.model.Geo;
+import tn.esprit.model.user.Admin;
 import tn.esprit.model.user.Employee;
 import tn.esprit.model.user.Role;
 import tn.esprit.model.user.RoleName;
@@ -68,7 +69,10 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			employee.setRoles(Arrays.asList(roleUser));
 			userRepository.save(employee);
 		}
-
+		//add admin
+		Admin admin = new Admin("admin","admin","admin","admin@admin.com",passwordEncoder.encode("admin"));
+		admin.setRoles(Arrays.asList(roleAdmin));
+		userRepository.save(admin);
 		alreadySetup = true;
 	}
 
