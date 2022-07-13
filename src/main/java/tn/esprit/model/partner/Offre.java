@@ -41,10 +41,10 @@ public class Offre extends BaseEntity {
 	private String description;
 	
 	@Column(name = "price")
-	private double price;
+	private Double price;
 	
 	@Column(name = "remise")
-	private float remise;
+	private Float remise;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "partner_id")
