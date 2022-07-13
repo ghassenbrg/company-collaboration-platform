@@ -18,10 +18,10 @@ public interface OffreService {
 
 	List<Offre> getPartnerOffres(Long idPartner);
 
-	Offre createOffre(Offre collaboration);
+	Offre createOffre(Offre offre);
 
-	void updateOffre(Long idOffre, Offre collaboration);
+	void updateOffre(Long idOffre, Offre offre);
 
-	void deleteOffre(Offre collaboration);
+	void deleteOffre(Offre offre);
 
 }
