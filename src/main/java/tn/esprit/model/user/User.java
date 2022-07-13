@@ -81,7 +81,6 @@ public abstract class User extends BaseEntity {
 
 	@NotBlank
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	@Size(max = 30)
 	@Column(name = "password")
 	private String password;
 
