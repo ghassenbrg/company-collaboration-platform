@@ -50,7 +50,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		// Create initial roles
 		Role roleAdmin = createRoleIfNotFound(RoleName.ROLE_ADMIN);
 		Role roleUser = createRoleIfNotFound(RoleName.ROLE_USER);
-		Role rolePartner = createRoleIfNotFound(RoleName.ROLE_PARTNER);
 
 		// init faker
 		Faker faker = new Faker();

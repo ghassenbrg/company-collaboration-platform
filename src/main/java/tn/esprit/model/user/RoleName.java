@@ -7,5 +7,5 @@ package tn.esprit.model.user;
  */
 
 public enum RoleName {
-	ROLE_ADMIN, ROLE_USER, ROLE_PARTNER
+	ROLE_ADMIN, ROLE_USER
 }

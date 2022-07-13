@@ -44,6 +44,10 @@ public class Post extends BaseEntity {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "post_tag", joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
 	private List<Tag> tags;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Like> likes;
 
 	public List<Comment> getComments() {
 		return comments == null ? null : new ArrayList<>(comments);

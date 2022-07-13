@@ -26,7 +26,7 @@ public class Like extends BaseEntity {
 	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "comment_id")
-	private Comment comment;
+	@JoinColumn(name = "post_id")
+	private Post post;
 
 }

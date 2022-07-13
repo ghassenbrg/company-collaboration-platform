@@ -81,7 +81,7 @@ public abstract class User extends BaseEntity {
 
 	@NotBlank
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	@Size(max = 100)
+	@Size(max = 30)
 	@Column(name = "password")
 	private String password;
 
@@ -147,11 +147,11 @@ public abstract class User extends BaseEntity {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Notification> notifications;
 	
-	@OneToMany(mappedBy = "follow", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "follow", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	private Set<User> follows;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	private User follow;
+	@ManyToMany(fetch = FetchType.LAZY)
+	private Set<User> follow;
 
 	public User(String firstName, String lastName, String username, String email, String password) {
 		this.firstName = firstName;

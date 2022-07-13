@@ -50,9 +50,5 @@ public class Comment extends BaseEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Comment parent;
-	
-	@JsonIgnore
-	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Like> likes;
 
 }
