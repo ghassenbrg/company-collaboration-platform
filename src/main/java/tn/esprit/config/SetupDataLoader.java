@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +32,6 @@ import tn.esprit.repository.partner.OffreRepository;
 import tn.esprit.repository.partner.PartnerRepository;
 import tn.esprit.repository.user.RoleRepository;
 import tn.esprit.repository.user.UserRepository;
-import tn.esprit.service.user.CustomUserDetailsService;
 
 /**
  * 

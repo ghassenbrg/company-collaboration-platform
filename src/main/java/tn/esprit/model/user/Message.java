@@ -2,6 +2,8 @@ package tn.esprit.model.user;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,7 +30,8 @@ public class Message extends BaseEntity {
 
 	@Column(name = "status")
 	@NotBlank
-	private String status;
+	@Enumerated(EnumType.STRING)
+	private MessageStatus status;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "receiver_id")

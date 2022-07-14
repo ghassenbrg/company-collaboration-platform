@@ -1,15 +1,14 @@
 package tn.esprit.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.Instant;
 
+import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Version;
 
 import org.springframework.data.annotation.CreatedBy;
@@ -38,15 +37,15 @@ public class BaseEntity implements Serializable {
 	private Long id;
 
 	@CreatedDate
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdDate;
+	@Column(nullable = false, updatable = false)
+	private Instant createdDate;
 
 	@CreatedBy
 	private String createdBy;
 
 	@LastModifiedDate
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastModifiedDate;
+	@Column(nullable = false)
+	private Instant lastModifiedDate;
 
 	@LastModifiedBy
 	private String lastModifiedBy;

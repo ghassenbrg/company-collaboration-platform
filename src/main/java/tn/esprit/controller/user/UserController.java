@@ -16,15 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import tn.esprit.model.user.Notification;
 import tn.esprit.model.user.User;
 import tn.esprit.payload.ApiResponse;
 import tn.esprit.payload.InfoRequest;
+import tn.esprit.payload.PagedResponse;
 import tn.esprit.payload.UserIdentityAvailability;
 import tn.esprit.payload.UserProfile;
 import tn.esprit.payload.UserSummary;
 import tn.esprit.security.CurrentUser;
 import tn.esprit.security.UserPrincipal;
+import tn.esprit.service.user.NotificationService;
 import tn.esprit.service.user.UserService;
+import tn.esprit.utils.Utils;
 
 /**
  * 
@@ -39,12 +43,25 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private NotificationService notificationService;
+
 	@GetMapping("/me")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<UserSummary> getCurrentUser(@CurrentUser UserPrincipal currentUser) {
 		UserSummary userSummary = userService.getCurrentUser(currentUser);
 
 		return new ResponseEntity<>(userSummary, HttpStatus.OK);
+	}
+
+	@GetMapping("/notifications")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public ResponseEntity<PagedResponse<Notification>> getNotification(@CurrentUser UserPrincipal currentUser,
+			@RequestParam(value = "page", required = false, defaultValue = Utils.DEFAULT_PAGE_NUMBER) Integer page,
+			@RequestParam(value = "size", required = false, defaultValue = Utils.DEFAULT_PAGE_SIZE) Integer size) {
+		
+		PagedResponse<Notification> response = notificationService.getUserNotification(currentUser, page, size);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@GetMapping("/checkUsernameAvailability")

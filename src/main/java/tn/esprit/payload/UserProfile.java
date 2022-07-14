@@ -1,5 +1,6 @@
 package tn.esprit.payload;
 
+import java.time.Instant;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ public class UserProfile {
 	private String username;
 	private String firstName;
 	private String lastName;
-	private Date joinedAt;
+	private Instant joinedAt;
 	private String email;
 	private UserAddress address;
 	private String phone;	

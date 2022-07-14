@@ -2,6 +2,8 @@ package tn.esprit.model.user;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,7 +30,8 @@ public class Notification extends BaseEntity {
 
 	@Column(name = "type")
 	@NotBlank
-	private String type;
+	@Enumerated(EnumType.STRING)
+	private NotificationType type;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
