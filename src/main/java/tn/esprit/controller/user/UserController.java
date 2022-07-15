@@ -20,12 +20,14 @@ import tn.esprit.model.user.Notification;
 import tn.esprit.model.user.User;
 import tn.esprit.payload.ApiResponse;
 import tn.esprit.payload.InfoRequest;
+import tn.esprit.payload.LinkedInAuthRequest;
 import tn.esprit.payload.PagedResponse;
 import tn.esprit.payload.UserIdentityAvailability;
 import tn.esprit.payload.UserProfile;
 import tn.esprit.payload.UserSummary;
 import tn.esprit.security.CurrentUser;
 import tn.esprit.security.UserPrincipal;
+import tn.esprit.service.impl.user.SeleniumService;
 import tn.esprit.service.user.NotificationService;
 import tn.esprit.service.user.UserService;
 import tn.esprit.utils.Utils;
@@ -45,6 +47,9 @@ public class UserController {
 
 	@Autowired
 	private NotificationService notificationService;
+	
+	@Autowired
+	private SeleniumService seleniumService;
 
 	@GetMapping("/me")
 	@PreAuthorize("hasRole('USER')")
@@ -62,6 +67,14 @@ public class UserController {
 		
 		PagedResponse<Notification> response = notificationService.getUserNotification(currentUser, page, size);
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@PostMapping("/collect/profile")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	public ResponseEntity<User> collectLinkedInProfile(@CurrentUser UserPrincipal currentUser,
+			@Valid @RequestBody LinkedInAuthRequest linkedInAuthRequest) {
+		User user = seleniumService.collectProfileInfo(linkedInAuthRequest, currentUser);
+		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
 	@GetMapping("/checkUsernameAvailability")

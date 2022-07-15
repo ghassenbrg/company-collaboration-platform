@@ -34,6 +34,7 @@ import org.hibernate.annotations.TypeDefs;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.vladmihalcea.hibernate.type.json.JsonStringType;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -59,7 +60,7 @@ import tn.esprit.model.forum.Post;
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }),
 		@UniqueConstraint(columnNames = { "email" }) })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@TypeDefs({ @TypeDef(name = "json", typeClass = JsonBinaryType.class) })
+@TypeDef(name = "json", typeClass = JsonStringType.class)
 public abstract class User extends BaseEntity {
 
 	private static final long serialVersionUID = 8628262968737538116L;
