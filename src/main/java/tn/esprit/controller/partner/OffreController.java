@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import tn.esprit.exception.BadRequestException;
 import tn.esprit.model.partner.Offre;
 import tn.esprit.model.partner.Partner;
 import tn.esprit.payload.ApiResponse;
@@ -44,32 +43,37 @@ public class OffreController {
     
 	@PostMapping("/create")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<OffreDTO> createOffre(@Valid @RequestBody OffreDTO offreDTO) {
+	public ResponseEntity<ApiResponse> createOffre(@Valid @RequestBody OffreDTO offreDTO) {
 		Optional<Partner> partner = partnerService.findById(offreDTO.getPartnerId());
 		if(!partner.isPresent()) {
-			throw new BadRequestException(new ApiResponse(false, "The partner with the id: "+offreDTO.getPartnerId()+" could not be found!"));
+			return new ResponseEntity<>(new ApiResponse(false, "The partner with the id: "+offreDTO.getPartnerId()+" could not be found!"),HttpStatus.BAD_REQUEST);
 		}
 		Offre entity = this.convertToEntity(offreDTO);
 		entity.setPartner(partner.get());
-		return new ResponseEntity<>(this.convertToDto(offreService.createOffre(entity)),HttpStatus.CREATED);
+		this.convertToDto(offreService.createOffre(entity));
+		return new ResponseEntity<>(new ApiResponse(true,"Offre created with success!"),HttpStatus.CREATED);
 	}
 
 	@PutMapping("/update/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Object> updateOffre(@PathVariable("id") Long id,
+	public ResponseEntity<ApiResponse> updateOffre(@PathVariable("id") Long id,
 			@RequestBody OffreDTO offreDTO) {
-		Offre offre = offreService.findById(id).orElseThrow(() -> new BadRequestException(new ApiResponse(false, "The processed offre could not be found!")));
-		this.modelMapper.map(offreDTO, offre);
-		offreService.updateOffre(id, offre);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		Optional<Offre> offre = offreService.findById(id);
+		if(!offre.isPresent())
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed offre could not be found!"),HttpStatus.NOT_FOUND);
+		this.modelMapper.map(offreDTO, offre.get());
+		offreService.updateOffre(id, offre.get());
+		return new ResponseEntity<>(new ApiResponse(true,"Offre updated with success!"),HttpStatus.NO_CONTENT);
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Object> deleteOffre(@PathVariable("id") Long id) {
-		Offre offre = offreService.findById(id).orElseThrow(() -> new BadRequestException(new ApiResponse(false, "The processed offre could not be found!")));
-		offreService.deleteOffre(offre);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<ApiResponse> deleteOffre(@PathVariable("id") Long id) {
+		Optional<Offre> offre = offreService.findById(id);
+		if(!offre.isPresent())
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed offre could not be found!"),HttpStatus.NOT_FOUND);
+		offreService.deleteOffre(offre.get());
+		return new ResponseEntity<>(new ApiResponse(true,"Offre deleted with success!"),HttpStatus.NO_CONTENT);
 	}
 
 	@GetMapping("/find/all")

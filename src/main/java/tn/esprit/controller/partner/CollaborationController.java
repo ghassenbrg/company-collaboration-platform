@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import tn.esprit.exception.BadRequestException;
 import tn.esprit.model.partner.Collaboration;
 import tn.esprit.model.partner.Partner;
 import tn.esprit.payload.ApiResponse;
@@ -44,32 +43,37 @@ public class CollaborationController {
     
 	@PostMapping("/create")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<CollaborationDTO> createCollaboration(@Valid @RequestBody CollaborationDTO collaborationDTO) {
+	public ResponseEntity<ApiResponse> createCollaboration(@Valid @RequestBody CollaborationDTO collaborationDTO) {
 		Optional<Partner> partner = partnerService.findById(collaborationDTO.getPartnerId());
 		if(!partner.isPresent()) {
-			throw new BadRequestException(new ApiResponse(false, "The partner with the id: "+collaborationDTO.getPartnerId()+" could not be found!"));
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The partner with the id: "+collaborationDTO.getPartnerId()+" could not be found!"),HttpStatus.BAD_REQUEST);
 		}
 		Collaboration entity = this.convertToEntity(collaborationDTO);
 		entity.setPartner(partner.get());
-		return new ResponseEntity<>(this.convertToDto(collaborationService.createCollaboration(entity)),HttpStatus.CREATED);
+		this.convertToDto(collaborationService.createCollaboration(entity));
+		return new ResponseEntity<>(new ApiResponse(true,"Collaboration created with success!"),HttpStatus.CREATED);
 	}
 
 	@PutMapping("/update/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Object> updateCollaboration(@PathVariable("id") Long id,
+	public ResponseEntity<ApiResponse> updateCollaboration(@PathVariable("id") Long id,
 			@RequestBody CollaborationDTO collaborationDTO) {
-		Collaboration collaboration = collaborationService.findById(id).orElseThrow(() -> new BadRequestException(new ApiResponse(false, "The processed collaboration could not be found!")));
+		Optional<Collaboration> collaboration = collaborationService.findById(id);
+		if(!collaboration.isPresent())
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed collaboration could not be found!"),HttpStatus.NOT_FOUND);
 		this.modelMapper.map(collaborationDTO, collaboration);
-		collaborationService.updateCollaboration(id, collaboration);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		collaborationService.updateCollaboration(id, collaboration.get());
+		return new ResponseEntity<>(new ApiResponse(true,"Collaboration updated with success!"),HttpStatus.NO_CONTENT);
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Object> deleteCollaboration(@PathVariable("id") Long id) {
-		Collaboration collaboration = collaborationService.findById(id).orElseThrow(() -> new BadRequestException(new ApiResponse(false, "The processed collaboration could not be found!")));
+	public ResponseEntity<ApiResponse> deleteCollaboration(@PathVariable("id") Long id) {
+		Collaboration collaboration = collaborationService.findById(id).orElse(null);
+		if(collaboration==null)
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed collaboration could not be found!"),HttpStatus.NOT_FOUND);
 		collaborationService.deleteCollaboration(collaboration);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(new ApiResponse(true,"Collaboration deleted with success!"),HttpStatus.NO_CONTENT);
 	}
 
 	@GetMapping("/find/all")

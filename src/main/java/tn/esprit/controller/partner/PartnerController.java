@@ -1,6 +1,7 @@
 package tn.esprit.controller.partner;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import tn.esprit.exception.BadRequestException;
 import tn.esprit.model.partner.Partner;
 import tn.esprit.payload.ApiResponse;
 import tn.esprit.payload.PartnerDTO;
@@ -38,26 +38,31 @@ public class PartnerController {
     
 	@PostMapping("/create")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<PartnerDTO> createPartner(@Valid @RequestBody PartnerDTO partnerDTO) {
-		return new ResponseEntity<>(this.convertToDto(partnerService.createPartner(this.convertToEntity(partnerDTO))),HttpStatus.CREATED);
+	public ResponseEntity<ApiResponse> createPartner(@Valid @RequestBody PartnerDTO partnerDTO) {
+		this.convertToDto(partnerService.createPartner(this.convertToEntity(partnerDTO)));
+		return new ResponseEntity<>(new ApiResponse(true,"Partner created with success!"),HttpStatus.CREATED);
 	}
 
 	@PutMapping("/update/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Object> updatePartner(@PathVariable("id") Long id,
+	public ResponseEntity<ApiResponse> updatePartner(@PathVariable("id") Long id,
 			@RequestBody PartnerDTO partnerDTO) {
-		Partner partner = partnerService.findById(id).orElseThrow(() -> new BadRequestException(new ApiResponse(false, "The processed partner could not be found!")));
-		partner.setCompanyName(partnerDTO.getCompanyName());
-		partnerService.updatePartner(id, partner);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		Optional<Partner> partner = partnerService.findById(id);
+		if(!partner.isPresent())
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed partner could not be found!"),HttpStatus.NOT_FOUND);
+		partner.get().setCompanyName(partnerDTO.getCompanyName());
+		partnerService.updatePartner(id, partner.get());
+		return new ResponseEntity<>(new ApiResponse(true,"Partner updated with success!"),HttpStatus.NO_CONTENT);
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Object> deletePartner(@PathVariable("id") Long id) {
-		Partner partner = partnerService.findById(id).orElseThrow(() -> new BadRequestException(new ApiResponse(false, "The processed partner could not be found!")));
-		partnerService.deletePartner(partner);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<ApiResponse> deletePartner(@PathVariable("id") Long id) {
+		Optional<Partner> partner = partnerService.findById(id);
+		if(!partner.isPresent())
+			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed partner could not be found!"),HttpStatus.NOT_FOUND);
+		partnerService.deletePartner(partner.get());
+		return new ResponseEntity<>(new ApiResponse(true,"Partner deleted with success!"),HttpStatus.NO_CONTENT);
 	}
 
 	@GetMapping("/find/all")
