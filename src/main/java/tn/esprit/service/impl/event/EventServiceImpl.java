@@ -37,7 +37,7 @@ public class EventServiceImpl implements EventService {
 		List<Event> events = new ArrayList<>();
 		List<Event> allEvents = getAllEvents();
 		allEvents.forEach(event -> {
-			if (event.getUser().equals(user)) {
+			if (event.getUser() != null && event.getUser().equals(user)) {
 				events.add(event);
 			}
 		});
