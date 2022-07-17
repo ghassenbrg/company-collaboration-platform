@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tn.esprit.model.event.Event;
 import tn.esprit.payload.ApiResponse;
+import tn.esprit.security.CurrentUser;
+import tn.esprit.security.UserPrincipal;
 import tn.esprit.service.event.EventService;
 
 /**
@@ -39,9 +41,9 @@ public class EventController {
 		return new ResponseEntity<>(events, HttpStatus.OK);
 	}
 
-	@GetMapping("/user/{userId}")
-	public ResponseEntity<List<Event>> findAllByUser(@PathVariable("userId") Long userId) {
-		List<Event> events = eventService.getEventsByUserId(userId);
+	@GetMapping("/my-calendar")
+	public ResponseEntity<List<Event>> findAllByUser(@CurrentUser UserPrincipal currentUser) {
+		List<Event> events = eventService.getEventsByUserId(currentUser);
 		return new ResponseEntity<>(events, HttpStatus.OK);
 	}
 
@@ -50,30 +52,30 @@ public class EventController {
 		Event event = eventService.findEventById(eventId);
 		if (event != null) {
 			return new ResponseEntity<>(event, HttpStatus.OK);
-		}
-		else {
+		} else {
 			ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "Event does not exist");
 			return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@PostMapping()
-	public ResponseEntity<Event> createEvent(@Valid @RequestBody Event event) {
-		event = eventService.createEvent(event);
+	public ResponseEntity<Event> createEvent(@CurrentUser UserPrincipal currentUser, @Valid @RequestBody Event event) {
+		event = eventService.createEvent(currentUser, event);
 		return new ResponseEntity<>(event, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{eventId}")
-	public ResponseEntity<Event> updateEvent(@PathVariable("eventId") Long eventId, @Valid @RequestBody Event event) {
-		event = eventService.updateEvent(eventId, event);
+	public ResponseEntity<Event> updateEvent(@CurrentUser UserPrincipal currentUser,
+			@PathVariable("eventId") Long eventId, @Valid @RequestBody Event event) {
+		event = eventService.updateEvent(currentUser, eventId, event);
 		return new ResponseEntity<>(event, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{eventId}/cancel")
-	public ResponseEntity<ApiResponse> cancelEvent(@PathVariable("eventId") Long eventId) {
+	public ResponseEntity<ApiResponse> cancelEvent(@CurrentUser UserPrincipal currentUser,
+			@PathVariable("eventId") Long eventId) {
 		Event event = eventService.findEventById(eventId);
-		eventService.cancelEvent(event);
-		ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "Event cancelled");
+		ApiResponse apiResponse = eventService.cancelEvent(currentUser, event);
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 
 	}
