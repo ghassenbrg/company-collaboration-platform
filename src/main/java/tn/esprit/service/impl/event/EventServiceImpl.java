@@ -54,10 +54,10 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public Event createEvent(UserPrincipal currentUser, Event event) {
-		//User user = userRepository.findById(currentUser.getId()).orElse(null);
-		//if (event != null) {
-		//	event.setUser(user);
-		//}
+		User user = userRepository.findById(currentUser.getId()).orElse(null);
+		if (event != null) {
+			event.setUser(user);
+		}
 		return eventRepository.save(event);
 	}
 
@@ -78,7 +78,6 @@ public class EventServiceImpl implements EventService {
 		}
 		ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to delete this event");
 		throw new AccessDeniedException(apiResponse);
-		
 
 	}
 

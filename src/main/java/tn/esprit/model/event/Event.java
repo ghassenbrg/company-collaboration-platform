@@ -48,6 +48,7 @@ public class Event extends BaseEntity {
 	@Column(name = "end_time")
 	private LocalTime endTime;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;

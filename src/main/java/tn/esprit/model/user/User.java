@@ -147,6 +147,7 @@ public abstract class User extends BaseEntity {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Notification> notifications;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "follow", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	private Set<User> follows;
 
