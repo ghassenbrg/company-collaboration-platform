@@ -54,7 +54,13 @@ public class UserServiceImpl implements UserService {
 		return new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getFirstName(),
 				currentUser.getLastName());
 	}
-
+	
+	@Override
+	public User getCurrentUserEntity(UserPrincipal currentUser) {
+		User user = userRepository.getUserByName(currentUser.getUsername());
+		return user;
+	}
+	
 	@Override
 	public UserIdentityAvailability checkUsernameAvailability(String username) {
 		Boolean isAvailable = !userRepository.existsByUsername(username);

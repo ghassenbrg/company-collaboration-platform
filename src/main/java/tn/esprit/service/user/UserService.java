@@ -16,6 +16,8 @@ import tn.esprit.security.UserPrincipal;
 public interface UserService {
 
 	UserSummary getCurrentUser(UserPrincipal currentUser);
+	
+	User getCurrentUserEntity(UserPrincipal currentUser);
 
 	UserIdentityAvailability checkUsernameAvailability(String username);
 
