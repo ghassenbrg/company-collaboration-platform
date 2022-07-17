@@ -25,7 +25,7 @@ public class PossibleValue extends BaseEntity {
 	@Column(name = "label")
 	private String label;
 
-	@Column(name = "order")
+	@Column(name = "order_")
 	private int order;
 
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -52,7 +52,7 @@ public class Question extends BaseEntity {
 	@Column(name = "isMultiple")
 	private boolean isMultiple;
 
-	@Column(name = "order")
+	@Column(name = "order_")
 	private int order;
 
 	@ManyToOne(fetch = FetchType.LAZY)
