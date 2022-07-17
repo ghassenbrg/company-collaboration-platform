@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tn.esprit.exception.AccessDeniedException;
+import tn.esprit.exception.BadRequestException;
 import tn.esprit.model.event.Event;
 import tn.esprit.model.user.User;
 import tn.esprit.payload.ApiResponse;
@@ -49,6 +50,10 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public Event findEventById(Long eventId) {
 		Event event = eventRepository.findById(eventId).orElse(null);
+		if (event == null) {
+			ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "Event does not exist");
+			throw new BadRequestException(apiResponse);
+		}
 		return event;
 	}
 
@@ -62,23 +67,36 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public Event updateEvent(UserPrincipal currentUser, Long eventId, Event event) {
-		if (event.getUser() != null && event.getUser().getId().equals(currentUser.getId())) {
-			return eventRepository.save(event);
+	public Event updateEvent(UserPrincipal currentUser, Long eventId, Event eventInput) {
+		Event event = findEventById(eventId);
+		event.setName(eventInput.getName());
+		event.setDescription(eventInput.getDescription());
+		event.setAddress(eventInput.getAddress());
+		event.setStartTime(eventInput.getStartTime());
+		event.setEndTime(eventInput.getEndTime());
+		if (eventInput.getParticipants() != null) {
+			event.getParticipants().clear();
+			event.getParticipants().addAll(eventInput.getParticipants());
 		}
-		ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to update this event");
-		throw new AccessDeniedException(apiResponse);
+		if (eventInput.getRatings() != null) {
+			event.getRatings().clear();
+			event.getRatings().addAll(eventInput.getRatings());
+		}
+		if (event.getUser() == null || !event.getUser().getId().equals(currentUser.getId())) {
+			ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to update this event");
+			throw new AccessDeniedException(apiResponse);
+		}
+		return eventRepository.save(event);
 	}
 
 	@Override
-	public ApiResponse cancelEvent(UserPrincipal currentUser, Event event) {
-		if (event.getUser() != null && event.getUser().getId().equals(currentUser.getId())) {
-			eventRepository.delete(event);
-			return new ApiResponse(Boolean.TRUE, "Event was cancelled successfully");
+	public void cancelEvent(UserPrincipal currentUser, Long eventId) {
+		Event event = findEventById(eventId);
+		if (event.getUser() == null || !event.getUser().getId().equals(currentUser.getId())) {
+			ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to delete this event");
+			throw new AccessDeniedException(apiResponse);
 		}
-		ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to delete this event");
-		throw new AccessDeniedException(apiResponse);
-
+		eventRepository.delete(event);
 	}
 
 }

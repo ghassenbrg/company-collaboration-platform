@@ -50,34 +50,31 @@ public class EventController {
 	@GetMapping("/{eventId}")
 	public ResponseEntity<Object> getEventDetails(@PathVariable("eventId") Long eventId) {
 		Event event = eventService.findEventById(eventId);
-		if (event != null) {
-			return new ResponseEntity<>(event, HttpStatus.OK);
-		} else {
-			ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "Event does not exist");
-			return new ResponseEntity<>(apiResponse, HttpStatus.NOT_FOUND);
-		}
+		return new ResponseEntity<>(event, HttpStatus.OK);
 	}
 
 	@PostMapping()
-	public ResponseEntity<Event> createEvent(@CurrentUser UserPrincipal currentUser, @Valid @RequestBody Event event) {
+	public ResponseEntity<ApiResponse> createEvent(@CurrentUser UserPrincipal currentUser,
+			@Valid @RequestBody Event event) {
 		event = eventService.createEvent(currentUser, event);
-		return new ResponseEntity<>(event, HttpStatus.CREATED);
+		ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "Event created successfully!");
+		return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
 	}
 
 	@PutMapping("/{eventId}")
-	public ResponseEntity<Event> updateEvent(@CurrentUser UserPrincipal currentUser,
+	public ResponseEntity<ApiResponse> updateEvent(@CurrentUser UserPrincipal currentUser,
 			@PathVariable("eventId") Long eventId, @Valid @RequestBody Event event) {
 		event = eventService.updateEvent(currentUser, eventId, event);
-		return new ResponseEntity<>(event, HttpStatus.OK);
+		ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "Event updated successfully!");
+		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{eventId}/cancel")
 	public ResponseEntity<ApiResponse> cancelEvent(@CurrentUser UserPrincipal currentUser,
 			@PathVariable("eventId") Long eventId) {
-		Event event = eventService.findEventById(eventId);
-		ApiResponse apiResponse = eventService.cancelEvent(currentUser, event);
+		eventService.cancelEvent(currentUser, eventId);
+		ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "Event was cancelled successfully");
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-
 	}
 
 }
