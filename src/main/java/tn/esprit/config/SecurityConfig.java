@@ -31,14 +31,14 @@ import tn.esprit.service.impl.user.CustomUserDetailsServiceImpl;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
-public class SecutiryConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final CustomUserDetailsServiceImpl customUserDetailsService;
 	private final JwtAuthenticationEntryPoint unauthorizedHandler;
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Autowired
-	public SecutiryConfig(UserRepository userRepository, CustomUserDetailsServiceImpl customUserDetailsService,
+	public SecurityConfig(UserRepository userRepository, CustomUserDetailsServiceImpl customUserDetailsService,
 			JwtAuthenticationEntryPoint unauthorizedHandler, JwtAuthenticationFilter jwtAuthenticationFilter) {
 		this.customUserDetailsService = customUserDetailsService;
 		this.unauthorizedHandler = unauthorizedHandler;
@@ -50,10 +50,10 @@ public class SecutiryConfig extends WebSecurityConfigurerAdapter {
 
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/api/auth/**")
+				.antMatchers(HttpMethod.POST, "/auth/**")
 				.permitAll()
-				.antMatchers(HttpMethod.GET, "/api/users/checkUsernameAvailability",
-						"/api/users/checkEmailAvailability")
+				.antMatchers(HttpMethod.GET, "/users/checkUsernameAvailability",
+						"/users/checkEmailAvailability")
 				.permitAll().antMatchers("/v2/api-docs").permitAll() // development mode
 				.antMatchers("/configuration/ui").permitAll() // development mode
 				.antMatchers("/swagger-resources/**").permitAll() // development mode

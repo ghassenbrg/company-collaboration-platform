@@ -34,7 +34,7 @@ import tn.esprit.service.partner.PartnerService;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/collaborations")
+@RequestMapping("/collaborations")
 public class CollaborationController {
 
 	private final CollaborationService collaborationService;

@@ -41,7 +41,7 @@ import tn.esprit.security.JwtTokenProvider;
  */
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 	
 	private static final String USER_ROLE_NOT_SET = "User role not set";
@@ -93,7 +93,7 @@ public class AuthController {
 
 		User result = userRepository.save(user);
 
-		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{userId}")
+		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users/{userId}")
 				.buildAndExpand(result.getId()).toUri();
 
 		return ResponseEntity.created(location).body(new ApiResponse(Boolean.TRUE, "User registered successfully"));

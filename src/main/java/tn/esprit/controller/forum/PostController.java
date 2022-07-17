@@ -33,7 +33,7 @@ import tn.esprit.service.user.UserService;
  */
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/posts")
 @PreAuthorize("hasRole('USER')")
 public class PostController {
 

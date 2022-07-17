@@ -30,7 +30,7 @@ import tn.esprit.service.partner.PartnerService;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/partners")
+@RequestMapping("/partners")
 public class PartnerController {
 
 	private final PartnerService partnerService;

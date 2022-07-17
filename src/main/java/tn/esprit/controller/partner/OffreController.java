@@ -34,7 +34,7 @@ import tn.esprit.service.partner.PartnerService;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/offres")
+@RequestMapping("/offres")
 public class OffreController {
 
 	private final OffreService offreService;

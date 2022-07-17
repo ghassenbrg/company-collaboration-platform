@@ -29,7 +29,7 @@ import tn.esprit.service.event.EventService;
  */
 
 @RestController
-@RequestMapping("/api/events")
+@RequestMapping("/events")
 public class EventController {
 
 	@Autowired
