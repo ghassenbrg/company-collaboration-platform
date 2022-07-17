@@ -63,7 +63,7 @@ public class CollaborationController {
 			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed collaboration could not be found!"),HttpStatus.NOT_FOUND);
 		this.modelMapper.map(collaborationDTO, collaboration);
 		collaborationService.updateCollaboration(id, collaboration.get());
-		return new ResponseEntity<>(new ApiResponse(true,"Collaboration updated with success!"),HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(new ApiResponse(true,"Collaboration updated with success!"),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete/{id}")
@@ -73,7 +73,7 @@ public class CollaborationController {
 		if(collaboration==null)
 			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed collaboration could not be found!"),HttpStatus.NOT_FOUND);
 		collaborationService.deleteCollaboration(collaboration);
-		return new ResponseEntity<>(new ApiResponse(true,"Collaboration deleted with success!"),HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(new ApiResponse(true,"Collaboration deleted with success!"),HttpStatus.OK);
 	}
 
 	@GetMapping("/find/all")

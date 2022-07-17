@@ -52,7 +52,7 @@ public class PartnerController {
 			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed partner could not be found!"),HttpStatus.NOT_FOUND);
 		partner.get().setCompanyName(partnerDTO.getCompanyName());
 		partnerService.updatePartner(id, partner.get());
-		return new ResponseEntity<>(new ApiResponse(true,"Partner updated with success!"),HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(new ApiResponse(true,"Partner updated with success!"),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete/{id}")
@@ -62,7 +62,7 @@ public class PartnerController {
 		if(!partner.isPresent())
 			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed partner could not be found!"),HttpStatus.NOT_FOUND);
 		partnerService.deletePartner(partner.get());
-		return new ResponseEntity<>(new ApiResponse(true,"Partner deleted with success!"),HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(new ApiResponse(true,"Partner deleted with success!"),HttpStatus.OK);
 	}
 
 	@GetMapping("/find/all")

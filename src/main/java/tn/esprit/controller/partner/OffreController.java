@@ -63,7 +63,7 @@ public class OffreController {
 			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed offre could not be found!"),HttpStatus.NOT_FOUND);
 		this.modelMapper.map(offreDTO, offre.get());
 		offreService.updateOffre(id, offre.get());
-		return new ResponseEntity<>(new ApiResponse(true,"Offre updated with success!"),HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(new ApiResponse(true,"Offre updated with success!"),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete/{id}")
@@ -73,7 +73,7 @@ public class OffreController {
 		if(!offre.isPresent())
 			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed offre could not be found!"),HttpStatus.NOT_FOUND);
 		offreService.deleteOffre(offre.get());
-		return new ResponseEntity<>(new ApiResponse(true,"Offre deleted with success!"),HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(new ApiResponse(true,"Offre deleted with success!"),HttpStatus.OK);
 	}
 
 	@GetMapping("/find/all")
