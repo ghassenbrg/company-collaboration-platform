@@ -20,6 +20,7 @@ app:
 
 server:
   port : 8081
+  context-path : /api
   
 cors:
   allowedOrings: '*'
