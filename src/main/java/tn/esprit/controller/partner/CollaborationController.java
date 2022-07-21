@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 import tn.esprit.model.partner.Collaboration;
 import tn.esprit.model.partner.Partner;
 import tn.esprit.payload.ApiResponse;
-import tn.esprit.payload.CollaborationDTO;
+import tn.esprit.payload.dto.CollaborationDTO;
 import tn.esprit.service.partner.CollaborationService;
 import tn.esprit.service.partner.PartnerService;
 

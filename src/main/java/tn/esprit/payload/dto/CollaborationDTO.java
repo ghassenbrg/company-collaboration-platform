@@ -1,4 +1,4 @@
-package tn.esprit.payload;
+package tn.esprit.payload.dto;
 
 import java.util.Date;
 

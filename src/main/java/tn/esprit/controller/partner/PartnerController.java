@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import tn.esprit.model.partner.Partner;
 import tn.esprit.payload.ApiResponse;
-import tn.esprit.payload.PartnerDTO;
+import tn.esprit.payload.dto.PartnerDTO;
 import tn.esprit.service.partner.PartnerService;
 
 /**

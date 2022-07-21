@@ -81,7 +81,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		Admin admin = new Admin("admin","admin","admin","admin@admin.com",passwordEncoder.encode("admin"));
 		admin.setCreatedBy("admin");
 		admin.setLastModifiedBy("admin");
-		admin.setRoles(Arrays.asList(roleAdmin));
+		admin.setRoles(Arrays.asList(roleAdmin, roleUser));
 		userRepository.save(admin);
 
 		//set admin as current user

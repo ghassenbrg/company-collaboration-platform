@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 import tn.esprit.model.partner.Offre;
 import tn.esprit.model.partner.Partner;
 import tn.esprit.payload.ApiResponse;
-import tn.esprit.payload.OffreDTO;
+import tn.esprit.payload.dto.OffreDTO;
 import tn.esprit.service.partner.OffreService;
 import tn.esprit.service.partner.PartnerService;
 
