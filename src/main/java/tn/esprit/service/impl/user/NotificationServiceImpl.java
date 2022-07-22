@@ -13,10 +13,12 @@ import org.springframework.stereotype.Service;
 import tn.esprit.model.user.Notification;
 import tn.esprit.model.user.NotificationType;
 import tn.esprit.model.user.User;
+import tn.esprit.payload.MailRequest;
 import tn.esprit.payload.PagedResponse;
 import tn.esprit.repository.user.NotificationRepository;
 import tn.esprit.repository.user.UserRepository;
 import tn.esprit.security.UserPrincipal;
+import tn.esprit.service.mail.MailService;
 import tn.esprit.service.user.NotificationService;
 import tn.esprit.utils.Utils;
 
@@ -34,6 +36,9 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Autowired
 	private NotificationRepository notificationRepository;
+
+	@Autowired
+	private MailService mailService;
 
 	@Override
 	public PagedResponse<Notification> getUserNotification(UserPrincipal currentUser, int page, int size) {
@@ -56,6 +61,9 @@ public class NotificationServiceImpl implements NotificationService {
 		notification.setContent(content);
 		notification.setType(type);
 		notification.setUser(user);
+
+		MailRequest mail = new MailRequest(user.getEmail(), "Notification : " + type.name(), content);
+		mailService.sendMail(mail);
 
 		return notificationRepository.save(notification);
 	}

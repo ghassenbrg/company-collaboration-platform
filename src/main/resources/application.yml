@@ -13,6 +13,25 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+  mail:
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: 'true'
+            required: 'true'
+          timeout: '5000'
+          auth: 'true'
+          connectiontimeout: '5000'
+          writetimeout: '5000'
+    host: smtp.gmail.com
+    username: mohameddhia.hachem@esprit.tn
+    password: 191SMT3919
+    port: '587'
+
+mail:
+  smtp:
+    debug: 'true'
 
 app:
   jwtSecret: secret
