@@ -17,9 +17,9 @@ public interface EventService {
 
 	Event findEventById(Long eventId);
 
-	Event createEvent(UserPrincipal currentUser, Event event);
+	void createEvent(UserPrincipal currentUser, Event event);
 
-	Event updateEvent(UserPrincipal currentUser, Long eventId, Event event);
+	void updateEvent(UserPrincipal currentUser, Long eventId, Event event);
 
 	void cancelEvent(UserPrincipal currentUser, Long eventId);
 }

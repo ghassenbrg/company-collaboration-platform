@@ -58,16 +58,16 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public Event createEvent(UserPrincipal currentUser, Event event) {
+	public void createEvent(UserPrincipal currentUser, Event event) {
 		User user = userRepository.findById(currentUser.getId()).orElse(null);
 		if (event != null) {
 			event.setUser(user);
 		}
-		return eventRepository.save(event);
+		eventRepository.save(event);
 	}
 
 	@Override
-	public Event updateEvent(UserPrincipal currentUser, Long eventId, Event eventInput) {
+	public void updateEvent(UserPrincipal currentUser, Long eventId, Event eventInput) {
 		Event event = findEventById(eventId);
 		event.setName(eventInput.getName());
 		event.setDescription(eventInput.getDescription());
@@ -86,7 +86,7 @@ public class EventServiceImpl implements EventService {
 			ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to update this event");
 			throw new AccessDeniedException(apiResponse);
 		}
-		return eventRepository.save(event);
+		eventRepository.save(event);
 	}
 
 	@Override
