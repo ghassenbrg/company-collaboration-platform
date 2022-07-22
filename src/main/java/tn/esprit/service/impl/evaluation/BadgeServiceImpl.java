@@ -39,7 +39,7 @@ public class BadgeServiceImpl implements BadgeService {
 	public PagedResponse<Badge> getAllBadges(int page, int size) {
 		Utils.validatePageNumberAndSize(page, size);
 
-		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, Utils.CREATED_DATE);
 
 		Page<Badge> badges = badgeRepository.findAll(pageable);
 
@@ -72,7 +72,7 @@ public class BadgeServiceImpl implements BadgeService {
 			return new ResponseEntity<>(updatedBadge, HttpStatus.OK);
 		}
 
-		throw new UnauthorizedException("You don't have permission to edit this category");
+		throw new UnauthorizedException("You don't have permission to edit this Badge");
 	}
 
 	@Override
@@ -81,10 +81,10 @@ public class BadgeServiceImpl implements BadgeService {
 		if (badge.getCreatedBy().equals(currentUser.getId())
 				|| currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
 			badgeRepository.deleteById(id);
-			return new ResponseEntity<>(new ApiResponse(Boolean.TRUE, "You successfully deleted category"),
+			return new ResponseEntity<>(new ApiResponse(Boolean.TRUE, "You successfully deleted Badge"),
 					HttpStatus.OK);
 		}
-		throw new UnauthorizedException("You don't have permission to delete this category");
+		throw new UnauthorizedException("You don't have permission to delete this Badge");
 	}
 
 	@Override
