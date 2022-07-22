@@ -49,15 +49,15 @@ public class EventController {
 
 	@GetMapping("/my-calendar")
 	public ResponseEntity<List<EventDTO>> findAllByUser(@CurrentUser UserPrincipal currentUser) {
-		List<EventDTO> events = eventService.getEventsByUserId(currentUser).stream().map(this::convertEventEntityToEventDto)
-				.collect(Collectors.toList());
+		List<EventDTO> events = eventService.getEventsByUserId(currentUser).stream()
+				.map(this::convertEventEntityToEventDto).collect(Collectors.toList());
 		return new ResponseEntity<>(events, HttpStatus.OK);
 	}
 
 	@GetMapping("/{eventId}")
-	public ResponseEntity<Object> getEventDetails(@PathVariable("eventId") Long eventId) {
+	public ResponseEntity<EventDTO> getEventDetails(@PathVariable("eventId") Long eventId) {
 		Event event = eventService.findEventById(eventId);
-		return new ResponseEntity<>(event, HttpStatus.OK);
+		return new ResponseEntity<>(convertEventEntityToEventDto(event), HttpStatus.OK);
 	}
 
 	@PostMapping()
@@ -71,7 +71,7 @@ public class EventController {
 	@PutMapping("/{eventId}")
 	public ResponseEntity<ApiResponse> updateEvent(@CurrentUser UserPrincipal currentUser,
 			@PathVariable("eventId") Long eventId, @Valid @RequestBody EventDTO event) {
-		eventService.updateEvent(currentUser, eventId, convertEventDtoToEventEntity(event));
+		eventService.updateEvent(currentUser, eventId, event);
 		ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "Event updated successfully!");
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 	}

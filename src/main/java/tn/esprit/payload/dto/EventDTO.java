@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tn.esprit.model.event.EventAddress;
-import tn.esprit.model.event.Participant;
 
 /**
  * 
@@ -26,6 +25,6 @@ public class EventDTO {
 	private LocalTime endTime;
 	private UserDTO user;
 	private EventAddress address;
-	private List<Participant> participants;
+	private List<ParticipantDTO> participants;
 	private List<RaitingDTO> ratings;
 }

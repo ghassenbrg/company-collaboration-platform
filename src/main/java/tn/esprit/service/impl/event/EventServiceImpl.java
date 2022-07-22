@@ -11,10 +11,13 @@ import tn.esprit.exception.BadRequestException;
 import tn.esprit.model.event.Event;
 import tn.esprit.model.user.User;
 import tn.esprit.payload.ApiResponse;
+import tn.esprit.payload.dto.EventDTO;
+import tn.esprit.payload.dto.ParticipantDTO;
 import tn.esprit.repository.event.EventRepository;
 import tn.esprit.repository.user.UserRepository;
 import tn.esprit.security.UserPrincipal;
 import tn.esprit.service.event.EventService;
+import tn.esprit.service.event.ParticipantService;
 
 /**
  * 
@@ -29,6 +32,9 @@ public class EventServiceImpl implements EventService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private ParticipantService participantService;
 
 	@Override
 	public List<Event> getAllEvents() {
@@ -67,7 +73,7 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public void updateEvent(UserPrincipal currentUser, Long eventId, Event eventInput) {
+	public void updateEvent(UserPrincipal currentUser, Long eventId, EventDTO eventInput) {
 		Event event = findEventById(eventId);
 		event.setName(eventInput.getName());
 		event.setDescription(eventInput.getDescription());
@@ -75,12 +81,9 @@ public class EventServiceImpl implements EventService {
 		event.setStartTime(eventInput.getStartTime());
 		event.setEndTime(eventInput.getEndTime());
 		if (eventInput.getParticipants() != null) {
-			event.getParticipants().clear();
-			event.getParticipants().addAll(eventInput.getParticipants());
-		}
-		if (eventInput.getRatings() != null) {
-			event.getRatings().clear();
-			event.getRatings().addAll(eventInput.getRatings());
+			for (ParticipantDTO participantDto : eventInput.getParticipants()) {
+				participantService.inviteParticipant(currentUser, participantDto, event);
+			}
 		}
 		if (event.getUser() == null || !event.getUser().getId().equals(currentUser.getId())) {
 			ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to update this event");
