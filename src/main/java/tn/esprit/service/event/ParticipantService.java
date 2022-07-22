@@ -12,5 +12,9 @@ import tn.esprit.security.UserPrincipal;
 public interface ParticipantService {
 
 	void inviteParticipant(UserPrincipal currentUser, ParticipantDTO participant, Event event);
+	
+	void acceptEvent(UserPrincipal currentUser, Event event);
+	
+	void refuseEvent(UserPrincipal currentUser, Event event);
 
 }

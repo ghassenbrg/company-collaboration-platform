@@ -1,6 +1,9 @@
 package tn.esprit.model.event;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,9 +28,12 @@ public class Participant extends BaseEntity {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "event_id")
 	private Event event;
+	
+	@Column(name = "invitation_status", columnDefinition = "varchar(32) default 'PENDING'")
+	@Enumerated(EnumType.STRING)
+	private InvitationStatus invitationStatus = InvitationStatus.PENDING;
 
 }

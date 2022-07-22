@@ -36,11 +36,29 @@ public class ParticipantController {
 	private EventService eventService;
 
 	@PostMapping("/{eventId}/invite")
-	public ResponseEntity<ApiResponse> createEvent(@CurrentUser UserPrincipal currentUser,
+	public ResponseEntity<ApiResponse> inviteParticipant(@CurrentUser UserPrincipal currentUser,
 			@PathVariable("eventId") Long eventId, @Valid @RequestBody ParticipantDTO participant) {
 		Event event = eventService.findEventById(eventId);
 		participantService.inviteParticipant(currentUser, participant, event);
 		ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "Participant added successfully!");
 		return new ResponseEntity<>(apiResponse, HttpStatus.CREATED);
+	}
+
+	@PostMapping("/{eventId}/accept")
+	public ResponseEntity<ApiResponse> acceptEvent(@CurrentUser UserPrincipal currentUser,
+			@PathVariable("eventId") Long eventId) {
+		Event event = eventService.findEventById(eventId);
+		participantService.acceptEvent(currentUser, event);
+		ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "You have accepted to participate in this event!");
+		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+	}
+
+	@PostMapping("/{eventId}/refuse")
+	public ResponseEntity<ApiResponse> refuseEvent(@CurrentUser UserPrincipal currentUser,
+			@PathVariable("eventId") Long eventId) {
+		Event event = eventService.findEventById(eventId);
+		participantService.refuseEvent(currentUser, event);
+		ApiResponse apiResponse = new ApiResponse(Boolean.TRUE, "You have refused to participate in this event!");
+		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
 	}
 }
