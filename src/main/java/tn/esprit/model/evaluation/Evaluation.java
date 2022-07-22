@@ -16,7 +16,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import tn.esprit.model.BaseEntity;
 import tn.esprit.model.user.User;
-
+/**
+ * 
+ * @author Mohamed ElFadhel NAOUAR
+ *
+ */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data

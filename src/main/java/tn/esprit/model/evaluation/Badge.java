@@ -18,13 +18,17 @@ import lombok.NoArgsConstructor;
 import tn.esprit.model.BaseEntity;
 import tn.esprit.model.forum.Post;
 import tn.esprit.model.user.Employee;
-
+/**
+ * 
+ * @author Mohamed ElFadhel NAOUAR
+ *
+ */
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
 @Table(name = "badges")
-public class Badges extends BaseEntity {
+public class Badge extends BaseEntity {
 	
 	private static final long serialVersionUID = -1348651020654338522L;
 	
