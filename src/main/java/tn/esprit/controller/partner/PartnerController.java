@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import tn.esprit.model.partner.Partner;
 import tn.esprit.payload.ApiResponse;
 import tn.esprit.payload.dto.PartnerDTO;
+import tn.esprit.payload.dto.TopPartner;
 import tn.esprit.service.partner.PartnerService;
 
 /**
@@ -71,6 +72,11 @@ public class PartnerController {
 		          .collect(Collectors.toList());
 	}
 
+	@GetMapping("/find/top/{number}")
+	public List<Partner> findTopPartners(@PathVariable("number") int number) {
+		return partnerService.findTopPartners(number);
+	}
+	
 	@GetMapping("/find/{name}")
 	public List<PartnerDTO> findByName(@PathVariable("name") String name) {
 		return partnerService.getAllPartnersByName(name).stream().map(this::convertToDto)

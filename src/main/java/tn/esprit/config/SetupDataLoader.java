@@ -1,6 +1,9 @@
 package tn.esprit.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -10,8 +13,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,16 +23,20 @@ import tn.esprit.model.Geo;
 import tn.esprit.model.partner.Collaboration;
 import tn.esprit.model.partner.Offre;
 import tn.esprit.model.partner.Partner;
+import tn.esprit.model.partner.PartnerRating;
 import tn.esprit.model.user.Admin;
 import tn.esprit.model.user.Employee;
 import tn.esprit.model.user.Role;
 import tn.esprit.model.user.RoleName;
+import tn.esprit.model.user.User;
 import tn.esprit.model.user.UserAddress;
 import tn.esprit.repository.partner.CollaborationRepository;
 import tn.esprit.repository.partner.OffreRepository;
+import tn.esprit.repository.partner.PartnerRatingRepository;
 import tn.esprit.repository.partner.PartnerRepository;
 import tn.esprit.repository.user.RoleRepository;
 import tn.esprit.repository.user.UserRepository;
+import tn.esprit.security.UserPrincipal;
 
 /**
  * 
@@ -55,6 +60,9 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 	private PartnerRepository partnerRepository;
 	
 	@Autowired
+	private PartnerRatingRepository partnerRatingRepository;
+	
+	@Autowired
 	private CollaborationRepository collaborationRepository;
 	
 	@Autowired
@@ -62,9 +70,6 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private UserDetailsService customUserDetailsService;
 	
 	@Override
 	@Transactional
@@ -85,14 +90,17 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 		userRepository.save(admin);
 
 		//set admin as current user
-		UserDetails userDetails = customUserDetailsService.loadUserByUsername("admin");
 		UsernamePasswordAuthenticationToken adminAuthentication = new UsernamePasswordAuthenticationToken(
-				userDetails, null, userDetails.getAuthorities());
+				UserPrincipal.create(admin), null, UserPrincipal.create(admin).getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(adminAuthentication);
-
+		
+		List<Partner> partners = new ArrayList<>();
+		List<User> users = new ArrayList<>();
+		
 		// init faker
 		Faker faker = new Faker();
 		
+		//fill some partners, offres, collaborations
 		for (int i = 0; i < 15; i++) {
 			Partner p = new Partner();
 			Collaboration c = new Collaboration();
@@ -100,15 +108,15 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			p.setCompanyName(faker.company().name());
 			c.setTitle(faker.lorem().sentence(15));
 			c.setDescription(faker.lorem().sentence(25));
-			c.setStartDate(faker.date().birthday());
-			c.setEndDate(DateUtils.addYears(c.getStartDate(), 1));
+			c.setStartDate(faker.date().between(new Date("11/08/2022"), new Date("11/12/2023")));
+			c.setEndDate(DateUtils.addDays(c.getStartDate(), ThreadLocalRandom.current().nextInt(1,15)));
 			c.setPartner(p);
-			partnerRepository.save(p);
+			partners.add(partnerRepository.save(p));
 			o.setTitle(faker.lorem().sentence(15));
 			o.setDescription(faker.lorem().sentence(25));
 			o.setPartner(p);
-			o.setStartDate(faker.date().birthday());
-			o.setEndDate(DateUtils.addMonths(o.getStartDate(), 1));
+			o.setStartDate(faker.date().between(new Date("11/08/2022"), new Date("11/12/2023")));
+			o.setEndDate(DateUtils.addYears(c.getStartDate(), ThreadLocalRandom.current().nextInt(1,3)));
 			double x = (Math.round(ThreadLocalRandom.current().nextDouble(1,50) * 100d) / 100d);
 			if((i%2)==0)
 				o.setPrice(x);
@@ -130,8 +138,35 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			employee.setAddress(userAddress);
 			employee.setPhone(faker.phoneNumber().phoneNumber());
 			employee.setRoles(Arrays.asList(roleUser));
-			userRepository.save(employee);
+			users.add(userRepository.save(employee));
 		}
+		//clear admin from auth context
+		SecurityContextHolder.clearContext();
+		// fill some partner ratings
+		for (int i = 0; i < 400; i++) {
+			int userId = ThreadLocalRandom.current().nextInt(1, users.size() - 1);
+			User user= users.get(userId);
+			int partnerId = ThreadLocalRandom.current().nextInt(1, partners.size() - 1);
+			float rating = ThreadLocalRandom.current().nextFloat(1, 5);
+			String comment = null;
+			if (rating >= 1 && rating <= 2) {
+				comment = "This is a bad partner :/";
+			} else if (rating > 2 && rating <= 3) {
+				comment = "This is a normal partner :)";
+			} else
+				comment = "This is a good partner :D";
+			UsernamePasswordAuthenticationToken userAuthenticationToken = new UsernamePasswordAuthenticationToken(
+					UserPrincipal.create(user), null, UserPrincipal.create(user).getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(userAuthenticationToken);
+			PartnerRating ratingPartner = new PartnerRating();
+			ratingPartner.setRating(rating);
+			ratingPartner.setComment(comment);
+			ratingPartner.setPartner(partners.get(partnerId));
+			ratingPartner.setUser(users.get(userId));
+			partnerRatingRepository.save(ratingPartner);
+			SecurityContextHolder.clearContext();
+		}
+		
 		alreadySetup = true;
 	}
 

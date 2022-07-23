@@ -7,6 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,13 +32,18 @@ public class Partner extends BaseEntity {
 	@NotBlank
 	private String companyName;
 	
+	@Column(name = "average_rating")
+	private float averageRating;
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "partner", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<PartnerRating> ratings;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "partner", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Offre> offres;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "partner", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Collaboration> collaborations;
 

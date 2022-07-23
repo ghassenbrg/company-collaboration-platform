@@ -1,5 +1,7 @@
 package tn.esprit.service.partner;
 
+import tn.esprit.model.partner.PartnerRating;
+
 /**
  * 
  * @author Mazen Aissa
@@ -7,4 +9,5 @@ package tn.esprit.service.partner;
  */
 public interface PartnerRatingService {
 
+	PartnerRating ratePartner(PartnerRating partnerRating);
 }

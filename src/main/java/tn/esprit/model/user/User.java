@@ -46,6 +46,7 @@ import tn.esprit.model.event.Rating;
 import tn.esprit.model.forum.Comment;
 import tn.esprit.model.forum.Like;
 import tn.esprit.model.forum.Post;
+import tn.esprit.model.partner.PartnerRating;
 
 /**
  * 
@@ -142,6 +143,10 @@ public abstract class User extends BaseEntity {
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Rating> ratings;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PartnerRating> partnerRatings;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

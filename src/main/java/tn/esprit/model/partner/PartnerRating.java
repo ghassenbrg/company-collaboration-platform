@@ -15,6 +15,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import tn.esprit.model.BaseEntity;
+import tn.esprit.model.user.User;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -26,7 +27,6 @@ public class PartnerRating extends BaseEntity {
 	private static final long serialVersionUID = 7397867773960892665L;
 
 	@Column(name = "rating")
-	@NotBlank
 	@Min(value = 1)
 	@Max(value = 5)
 	private float rating;
@@ -38,5 +38,9 @@ public class PartnerRating extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "partner_id")
 	private Partner partner;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
 
 }

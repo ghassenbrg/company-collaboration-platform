@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import tn.esprit.model.partner.Partner;
+import tn.esprit.payload.dto.TopPartner;
 import tn.esprit.repository.partner.PartnerRepository;
 import tn.esprit.service.partner.PartnerService;
 
@@ -49,6 +50,11 @@ public class PartnerServiceImpl implements PartnerService {
 	@Override
 	public List<Partner> getAllPartnersByName(String name) {
 		return partnerRepository.findByCompanyNameContaining(name);
+	}
+
+	@Override
+	public List<Partner> findTopPartners(int number) {
+		return partnerRepository.findTopPartners(number);
 	}
 
 }
