@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RaitingDTO {
+public class RatingDTO {
+	private Long id;
 	private float rating;
 	private String comment;
 	private UserDTO user;
-	private EventDTO event;
 }

@@ -8,7 +8,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
@@ -27,7 +26,6 @@ public class Rating extends BaseEntity {
 	private static final long serialVersionUID = 7397867773960892665L;
 
 	@Column(name = "rating")
-	@NotBlank
 	@Min(value = 1)
 	@Max(value = 5)
 	private float rating;

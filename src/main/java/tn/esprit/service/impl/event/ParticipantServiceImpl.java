@@ -65,7 +65,8 @@ public class ParticipantServiceImpl implements ParticipantService {
 		participantRepository.save(participant);
 	}
 
-	private Participant findParticipant(UserPrincipal currentUser, Event event) {
+	@Override
+	public Participant findParticipant(UserPrincipal currentUser, Event event) {
 		if (event.getParticipants() != null && !event.getParticipants().isEmpty()) {
 			for (Participant participant : event.getParticipants()) {
 				if (participant != null && participant.getUser() != null && participant.getUser().getId() != null

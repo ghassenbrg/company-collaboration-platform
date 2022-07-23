@@ -26,5 +26,5 @@ public class EventDTO {
 	private UserDTO user;
 	private EventAddress address;
 	private List<ParticipantDTO> participants;
-	private List<RaitingDTO> ratings;
+	private List<RatingDTO> ratings;
 }
