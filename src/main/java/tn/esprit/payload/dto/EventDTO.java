@@ -23,6 +23,7 @@ public class EventDTO {
 	private String description;
 	private LocalTime startTime;
 	private LocalTime endTime;
+	private CategoryDTO category;
 	private UserDTO user;
 	private EventAddress address;
 	private List<ParticipantDTO> participants;

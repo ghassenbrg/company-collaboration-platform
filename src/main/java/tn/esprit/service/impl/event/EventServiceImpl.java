@@ -16,6 +16,7 @@ import tn.esprit.payload.dto.ParticipantDTO;
 import tn.esprit.repository.event.EventRepository;
 import tn.esprit.repository.user.UserRepository;
 import tn.esprit.security.UserPrincipal;
+import tn.esprit.service.event.EventCategoryService;
 import tn.esprit.service.event.EventService;
 import tn.esprit.service.event.ParticipantService;
 
@@ -35,6 +36,9 @@ public class EventServiceImpl implements EventService {
 
 	@Autowired
 	private ParticipantService participantService;
+	
+	@Autowired
+	private EventCategoryService eventCategoryService;
 
 	@Override
 	public List<Event> getAllEvents() {
@@ -80,6 +84,9 @@ public class EventServiceImpl implements EventService {
 		event.setAddress(eventInput.getAddress());
 		event.setStartTime(eventInput.getStartTime());
 		event.setEndTime(eventInput.getEndTime());
+		if (eventInput.getCategory() != null) {
+			eventCategoryService.addEventCategory(currentUser, eventInput.getCategory(), event);
+		}
 		if (eventInput.getParticipants() != null) {
 			for (ParticipantDTO participantDto : eventInput.getParticipants()) {
 				participantService.inviteParticipant(currentUser, participantDto, event);

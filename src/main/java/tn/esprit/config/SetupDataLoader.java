@@ -20,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.javafaker.Faker;
 
 import tn.esprit.model.Geo;
+import tn.esprit.model.event.Category;
+import tn.esprit.model.event.Event;
+import tn.esprit.model.event.Participant;
 import tn.esprit.model.partner.Collaboration;
 import tn.esprit.model.partner.Offre;
 import tn.esprit.model.partner.Partner;
@@ -30,6 +33,9 @@ import tn.esprit.model.user.Role;
 import tn.esprit.model.user.RoleName;
 import tn.esprit.model.user.User;
 import tn.esprit.model.user.UserAddress;
+import tn.esprit.repository.event.EventCategoryRepository;
+import tn.esprit.repository.event.EventRepository;
+import tn.esprit.repository.event.ParticipantRepository;
 import tn.esprit.repository.partner.CollaborationRepository;
 import tn.esprit.repository.partner.OffreRepository;
 import tn.esprit.repository.partner.PartnerRatingRepository;
@@ -70,6 +76,15 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private EventRepository eventRepository;
+	
+	@Autowired
+	private ParticipantRepository participantRepository;
+	
+	@Autowired
+	private EventCategoryRepository eventCategoryRepository;
 	
 	@Override
 	@Transactional
@@ -165,6 +180,29 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			ratingPartner.setUser(users.get(userId));
 			partnerRatingRepository.save(ratingPartner);
 			SecurityContextHolder.clearContext();
+		}
+		
+		//Set event categories
+		for (int i = 0; i < 5; i++) {
+			Category category = new Category();
+			category.setName(faker.lorem().sentence(10));
+			eventCategoryRepository.save(category);
+		}
+		
+		//Set events
+		for (int i = 0; i < 50; i++) {
+			Event newEvent = new Event();
+			newEvent.setName(faker.lorem().sentence(10));
+			newEvent.setDescription(faker.lorem().sentence(15));
+			eventRepository.save(newEvent);
+		}
+		for (Event createdEvent : eventRepository.findAll()) {
+			for (int j = 1; j <= 5; j++) {
+				Participant participant = new Participant();
+				participant.setUser(users.get(faker.random().nextInt(1, 20)));
+				participant.setEvent(createdEvent);
+				participantRepository.save(participant);
+			}
 		}
 		
 		alreadySetup = true;

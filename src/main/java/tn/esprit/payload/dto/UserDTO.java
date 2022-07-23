@@ -5,7 +5,6 @@ import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tn.esprit.model.user.UserAddress;
 
 @Data
 @AllArgsConstructor
@@ -17,6 +16,5 @@ public class UserDTO {
 	private String lastName;
 	private Instant joinedAt;
 	private String email;
-	private UserAddress address;
 	private String phone;
 }
