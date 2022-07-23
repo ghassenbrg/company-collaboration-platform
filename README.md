@@ -36,7 +36,6 @@
 ● CRUD events (create event, update event, view event details, cancel an event).<br />
 ● Invite participants.<br />
 ● Accept/deny a request to join an event.<br />
-● Participate in events.<br />
 ● Rate and comment on an event.<br />
 ● Find colleagues who share the same interests.<br />
 ● Filter by category, type, ...<br />
