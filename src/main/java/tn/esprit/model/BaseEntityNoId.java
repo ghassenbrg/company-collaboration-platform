@@ -5,9 +5,6 @@ import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
@@ -27,13 +24,25 @@ import lombok.Data;
 
 @Data
 @MappedSuperclass
-@EntityListeners({AuditingEntityListener.class})
-public class BaseEntity extends BaseEntityNoId implements Serializable {
+@EntityListeners({ AuditingEntityListener.class })
+public class BaseEntityNoId implements Serializable {
 
-	private static final long serialVersionUID = 6520392150085945982L;
+	private static final long serialVersionUID = 6896440922401088416L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@CreatedDate
+	@Column(nullable = false, updatable = false)
+	private Instant createdDate;
 
+	@CreatedBy
+	private String createdBy;
+
+	@LastModifiedDate
+	@Column(nullable = false)
+	private Instant lastModifiedDate;
+
+	@LastModifiedBy
+	private String lastModifiedBy;
+
+	@Version
+	private Integer version;
 }

@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -20,15 +21,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import tn.esprit.model.BaseEntity;
+import tn.esprit.model.BaseEntityNoId;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
-public class Question extends BaseEntity {
+public class Question extends BaseEntityNoId {
 
 	private static final long serialVersionUID = 8186195571034458084L;
+
+	@Id
+	private String id;
 
 	@Column(name = "text")
 	private String text;

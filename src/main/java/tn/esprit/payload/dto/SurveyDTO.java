@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SurveyDTO {
 
-	private Long id;
+	private String id;
 
 	private String name;
 

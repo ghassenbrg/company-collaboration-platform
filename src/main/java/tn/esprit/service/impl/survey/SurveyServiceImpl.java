@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import tn.esprit.model.survey.Survey;
+import tn.esprit.payload.dto.SurveyDTO;
 import tn.esprit.repository.survey.SurveyRepository;
 import tn.esprit.service.survey.SurveyService;
 
@@ -37,51 +38,76 @@ public class SurveyServiceImpl implements SurveyService {
 	}
 
 	@Override
-	public Survey getSurey(Long id) {
+	public Survey getSurey(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public byte[] exportSurvey(Long id) {
+	public byte[] exportSurvey(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Survey updateSurvey(Survey survey, Long id) {
+	public Survey updateSurvey(Survey survey, String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Survey updateSurveyByFile(byte[] file, Long id) {
+	public Survey updateSurveyByFile(byte[] file, String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteSurvey(Long id) {
+	public void deleteSurvey(String id) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void publishSurvey(Long id) {
+	public void publishSurvey(String id) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void cancelSurvey(Long id) {
+	public void cancelSurvey(String id) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void closeSurvey(Long id) {
+	public void closeSurvey(String id) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public Survey getOrCreateSurvey(String id) {
+		// TODO Auto-generated method stub
+		return null;
+		
+	}
+
+	@Override
+	public SurveyDTO convertSurveyToDto(Survey survey) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Survey convertDtoToSurvey(SurveyDTO surveyDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Survey createOrUpdateSurvey(Survey survey) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

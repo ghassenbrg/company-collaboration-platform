@@ -12,7 +12,7 @@ import tn.esprit.model.survey.QuestionType;
 @NoArgsConstructor
 public class QuestionDTO {
 
-	private Long id;
+	private String id;
 	
 	private String text;
 
