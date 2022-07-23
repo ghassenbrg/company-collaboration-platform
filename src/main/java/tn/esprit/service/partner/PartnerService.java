@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import tn.esprit.model.partner.Partner;
+import tn.esprit.payload.dto.PartnerProjection;
 
 /**
  * 
@@ -16,7 +17,7 @@ public interface PartnerService {
 
 	List<Partner> getAllPartners();
 
-	List<Partner> findTopPartners(int number);
+	List<PartnerProjection> findTopPartners(int number);
 
 	List<Partner> getAllPartnersByName(String name);
 

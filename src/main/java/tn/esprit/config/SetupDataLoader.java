@@ -147,7 +147,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			int userId = ThreadLocalRandom.current().nextInt(1, users.size() - 1);
 			User user= users.get(userId);
 			int partnerId = ThreadLocalRandom.current().nextInt(1, partners.size() - 1);
-			float rating = ThreadLocalRandom.current().nextFloat(1, 5);
+			float rating = Math.round(ThreadLocalRandom.current().nextFloat(1,5)*100)/100.0f;
 			String comment = null;
 			if (rating >= 1 && rating <= 2) {
 				comment = "This is a bad partner :/";
