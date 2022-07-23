@@ -21,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 import tn.esprit.model.partner.Partner;
 import tn.esprit.payload.ApiResponse;
 import tn.esprit.payload.dto.PartnerDTO;
-import tn.esprit.payload.dto.TopPartner;
 import tn.esprit.service.partner.PartnerService;
 
 /**

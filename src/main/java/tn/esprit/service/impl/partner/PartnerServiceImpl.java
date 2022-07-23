@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import tn.esprit.model.partner.Partner;
-import tn.esprit.payload.dto.TopPartner;
 import tn.esprit.repository.partner.PartnerRepository;
 import tn.esprit.service.partner.PartnerService;
 

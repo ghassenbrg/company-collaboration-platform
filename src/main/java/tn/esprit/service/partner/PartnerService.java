@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import tn.esprit.model.partner.Partner;
-import tn.esprit.payload.dto.TopPartner;
 
 /**
  * 
