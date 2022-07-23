@@ -12,7 +12,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import tn.esprit.model.partner.Partner;
-import tn.esprit.payload.dto.TopPartner;
 
 @Repository
 public interface PartnerRepository extends JpaRepository<Partner, Long> {
