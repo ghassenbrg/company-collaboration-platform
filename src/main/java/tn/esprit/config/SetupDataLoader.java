@@ -197,6 +197,17 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			eventRepository.save(newEvent);
 		}
 		for (Event createdEvent : eventRepository.findAll()) {
+			Category category = eventCategoryRepository.findById((long) faker.random().nextInt(1, 5)).orElse(null);
+			if (category.getEvents() != null) {
+				category.getEvents().add(createdEvent);
+			}
+			else {
+				List<Event> events = new ArrayList<Event>();
+				events.add(createdEvent);
+				category.setEvents(events);
+			}
+			eventCategoryRepository.save(category);	
+			createdEvent.setCategory(category);
 			for (int j = 1; j <= 5; j++) {
 				Participant participant = new Participant();
 				participant.setUser(users.get(faker.random().nextInt(1, 20)));

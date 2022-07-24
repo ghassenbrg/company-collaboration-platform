@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 
 import tn.esprit.exception.AccessDeniedException;
 import tn.esprit.exception.BadRequestException;
+import tn.esprit.model.event.Category;
 import tn.esprit.model.event.Event;
 import tn.esprit.model.user.User;
 import tn.esprit.payload.ApiResponse;
 import tn.esprit.payload.dto.EventDTO;
 import tn.esprit.payload.dto.ParticipantDTO;
+import tn.esprit.repository.event.EventCategoryRepository;
 import tn.esprit.repository.event.EventRepository;
 import tn.esprit.repository.user.UserRepository;
 import tn.esprit.security.UserPrincipal;
@@ -36,9 +38,12 @@ public class EventServiceImpl implements EventService {
 
 	@Autowired
 	private ParticipantService participantService;
-	
+
 	@Autowired
 	private EventCategoryService eventCategoryService;
+
+	@Autowired
+	private EventCategoryRepository eventCategoryRepository;
 
 	@Override
 	public List<Event> getAllEvents() {
@@ -86,7 +91,10 @@ public class EventServiceImpl implements EventService {
 		event.setEndTime(eventInput.getEndTime());
 		if (eventInput.getCategory() != null) {
 			eventCategoryService.addEventCategory(currentUser, eventInput.getCategory(), event);
+			Category category = eventCategoryRepository.findById(eventInput.getCategory().getId()).orElse(null);
+			event.setCategory(category);
 		}
+
 		if (eventInput.getParticipants() != null) {
 			for (ParticipantDTO participantDto : eventInput.getParticipants()) {
 				participantService.inviteParticipant(currentUser, participantDto, event);
