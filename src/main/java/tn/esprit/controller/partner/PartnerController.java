@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import tn.esprit.model.partner.Partner;
 import tn.esprit.payload.ApiResponse;
+import tn.esprit.payload.TopPartner;
 import tn.esprit.payload.dto.PartnerDTO;
-import tn.esprit.payload.dto.PartnerProjection;
 import tn.esprit.service.partner.PartnerService;
 
 /**
@@ -51,7 +51,7 @@ public class PartnerController {
 		Optional<Partner> partner = partnerService.findById(id);
 		if(!partner.isPresent())
 			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed partner could not be found!"),HttpStatus.NOT_FOUND);
-		partner.get().setCompanyName(partnerDTO.getCompanyName());
+		partner.get().setName(partnerDTO.getName());
 		partnerService.updatePartner(id, partner.get());
 		return new ResponseEntity<>(new ApiResponse(true,"Partner updated with success!"),HttpStatus.OK);
 	}
@@ -73,8 +73,8 @@ public class PartnerController {
 	}
 
 	@GetMapping("/find/top/{number}")
-	public List<PartnerProjection> findTopPartners(@PathVariable("number") int number) {
-		return partnerService.findTopPartners(number);
+	public List<TopPartner> findTopPartners(@PathVariable("number") int number) {
+		return partnerService.findTopPartnersOfPastMonth(number);
 	}
 	
 	@GetMapping("/find/{name}")

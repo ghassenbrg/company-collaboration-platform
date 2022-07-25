@@ -25,9 +25,12 @@ public class Partner extends BaseEntity {
 
 	private static final long serialVersionUID = 1533266878309725038L;
 	
-	@Column(name = "company_name")
+	@Column(name = "name")
 	@NotBlank
-	private String companyName;
+	private String name;
+	
+	@Column(name = "logo")
+	private String logo;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "partner", cascade = CascadeType.ALL, orphanRemoval = true)

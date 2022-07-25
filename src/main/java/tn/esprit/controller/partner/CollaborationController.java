@@ -61,7 +61,7 @@ public class CollaborationController {
 		Optional<Collaboration> collaboration = collaborationService.findById(id);
 		if(!collaboration.isPresent())
 			return new ResponseEntity<ApiResponse>(new ApiResponse(false, "The processed collaboration could not be found!"),HttpStatus.NOT_FOUND);
-		this.modelMapper.map(collaborationDTO, collaboration);
+		this.modelMapper.map(collaborationDTO, collaboration.get());
 		collaborationService.updateCollaboration(id, collaboration.get());
 		return new ResponseEntity<>(new ApiResponse(true,"Collaboration updated with success!"),HttpStatus.OK);
 	}

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import tn.esprit.exception.ResourceNotFoundException;
 import tn.esprit.exception.UnauthorizedException;
-import tn.esprit.model.evaluation.Badge;
 import tn.esprit.model.evaluation.Evaluation;
 import tn.esprit.model.user.RoleName;
 import tn.esprit.model.user.User;

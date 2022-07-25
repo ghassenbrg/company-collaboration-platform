@@ -12,15 +12,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import tn.esprit.model.partner.Partner;
-import tn.esprit.payload.dto.PartnerProjection;
+import tn.esprit.payload.TopPartner;
 
 @Repository
 public interface PartnerRepository extends JpaRepository<Partner, Long> {
 
-	List<Partner> findByCompanyNameContaining(String name);
+	List<Partner> findByNameContaining(String name);
 
-	@Query(value = "SELECT p.company_name as CompanyName, ROUND(avg(rating),2) as averageRating FROM partner_rating prt "
-			+ "inner join partners p " + "on prt.partner_id = p.id " + "group by partner_id "
-			+ "order by ROUND(avg(rating),2) desc limit ?1", nativeQuery = true)
-	List<PartnerProjection> findTopPartners(int number);
+	@Query(value = "SELECT p.name as Name,p.logo as Logo, ROUND(avg(rating),2) as averageRating FROM partner_rating prt "
+			+ "inner join partners p " + "on prt.partner_id = p.id where "
+			+ "prt.last_modified_date BETWEEN (sysdate() - INTERVAL 1 MONTH) AND sysdate() " + "group by partner_id "
+			+ "order by averageRating desc limit ?1", nativeQuery = true)
+	List<TopPartner> findTopPartnersOfPastMonth(int number);
 }

@@ -1,6 +1,7 @@
 package tn.esprit.model.user;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,7 +16,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -29,16 +29,16 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import tn.esprit.model.BaseEntity;
 import tn.esprit.model.event.Event;
 import tn.esprit.model.event.Participant;
@@ -56,7 +56,9 @@ import tn.esprit.model.partner.PartnerRating;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }),
 		@UniqueConstraint(columnNames = { "email" }) })
@@ -95,19 +97,19 @@ public abstract class User extends BaseEntity {
 
 	@Column(name = "phone")
 	private String phone;
-	
+
 	@Column(name = "score")
 	private float score;
-	
+
 	@Column(name = "birthday")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date birthday;
-	
-	@ElementCollection 
-    @CollectionTable(name = "favoris", joinColumns = @JoinColumn(name = "id"))
-    @Column(name = "favoris") 
-    private List<String> favoris;
-	
+
+	@ElementCollection
+	@CollectionTable(name = "favoris", joinColumns = @JoinColumn(name = "id"))
+	@Column(name = "favoris")
+	private List<String> favoris;
+
 	@Type(type = "json")
 	@Column(columnDefinition = "json")
 	private String info;
@@ -122,42 +124,47 @@ public abstract class User extends BaseEntity {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Post> posts;
+	private Set<Post> posts;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Comment> comments;
+	private Set<Comment> comments;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Event> events;
+	private Set<Event> events;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Participant> participants;
+	private Set<Participant> participants;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Like> likes;
+	private Set<Like> likes;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Rating> ratings;
-	
+	private Set<Rating> ratings;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<PartnerRating> partnerRatings;
-	
+	private Set<PartnerRating> partnerRatings;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Notification> notifications;
-	
+
 	@JsonIgnore
 	@ManyToMany(mappedBy = "follow", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
 	private Set<User> follows;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<User> follow;
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@JoinTable(name = "conversation_user", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "conversation_id") })
+	private Set<Conversation> conversations = new HashSet<>();
 
 	public User(String firstName, String lastName, String username, String email, String password) {
 		this.firstName = firstName;
