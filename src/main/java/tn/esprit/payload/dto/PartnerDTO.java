@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PartnerDTO {
 	private Long id;
-	private String companyName;
+	private String name;
+	private String logo;
 	private List<OffreDTO> offres;
 	private List<CollaborationDTO> collaborations;
 	private List<PartnerRatingDTO> ratings;

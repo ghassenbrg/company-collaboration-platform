@@ -3,8 +3,10 @@ package tn.esprit.config;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.commons.lang3.time.DateUtils;
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.javafaker.Company;
 import com.github.javafaker.Faker;
 
 import tn.esprit.model.Geo;
@@ -114,13 +117,21 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 		// init faker
 		Faker faker = new Faker();
+		
+		// get unique logos
+		Set<String> uniqueLogos = new HashSet<>();
+		while (uniqueLogos.size() < 13) {
+			uniqueLogos.add(faker.company().logo());
+		}
 
 		// fill some partners, offres, collaborations
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 13; i++) {
 			Partner p = new Partner();
 			Collaboration c = new Collaboration();
 			Offre o = new Offre();
-			p.setCompanyName(faker.company().name());
+			Company comp = faker.company();
+			p.setName(comp.name());
+			p.setLogo(uniqueLogos.toArray()[i].toString());
 			c.setTitle(faker.lorem().sentence(15));
 			c.setDescription(faker.lorem().sentence(25));
 			c.setStartDate(faker.date().between(new Date("11/08/2022"), new Date("11/12/2023")));
