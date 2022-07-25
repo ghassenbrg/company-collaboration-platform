@@ -31,18 +31,18 @@ public class BaseEntityNoId implements Serializable {
 
 	@CreatedDate
 	@Column(nullable = false, updatable = false)
-	private Instant createdDate;
+	protected Instant createdDate;
 
 	@CreatedBy
-	private String createdBy;
+	protected String createdBy;
 
 	@LastModifiedDate
 	@Column(nullable = false)
-	private Instant lastModifiedDate;
+	protected Instant lastModifiedDate;
 
 	@LastModifiedBy
-	private String lastModifiedBy;
+	protected String lastModifiedBy;
 
 	@Version
-	private Integer version;
+	protected Integer version;
 }
