@@ -35,9 +35,14 @@ public class ParticipantServiceImpl implements ParticipantService {
 			Participant participant = new Participant();
 			if (participantDto.getUser() != null) {
 				User user = userRepository.findById(participantDto.getUser().getId()).orElse(null);
+				if (ParticipantAlreadyExist(event, user)) {
+					ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "User is already invited to this event!");
+					throw new AccessDeniedException(apiResponse);
+				}
 				participant.setUser(user);
 				participant.setEvent(event);
 			}
+
 			participantRepository.save(participant);
 		}
 
@@ -77,6 +82,15 @@ public class ParticipantServiceImpl implements ParticipantService {
 			}
 		}
 		return null;
+	}
+
+	private boolean ParticipantAlreadyExist(Event event, User user) {
+		Participant duplicatedParticipant = event.getParticipants().stream()
+				.filter(participant -> user.getId().equals(participant.getUser().getId())).findAny().orElse(null);
+		if (duplicatedParticipant != null) {
+			return true;
+		}
+		return false;
 	}
 
 }

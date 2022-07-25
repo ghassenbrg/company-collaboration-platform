@@ -45,11 +45,12 @@ public class RecommandationsServiceImpl implements RecommandationsService {
 			for (Participant participant : event.getParticipants()) {
 				if (participant.getUser() != null && participant.getUser().getId() != null) {
 					if (recommandedEmplyees.containsKey(participant.getUser().getId())) {
-						Duration totalTime = recommandedEmplyees.get(participant.getUser().getId()).getTotalTime().plus(eventDuration);
+						Duration totalTime = recommandedEmplyees.get(participant.getUser().getId()).getTotalTime()
+								.plus(eventDuration);
 						recommandedEmplyees.get(participant.getUser().getId()).setTotalTime(totalTime);
-						recommandedEmplyees.put(participant.getUser().getId(), recommandedEmplyees.get(participant.getUser().getId()));
-					}
-					else {
+						recommandedEmplyees.put(participant.getUser().getId(),
+								recommandedEmplyees.get(participant.getUser().getId()));
+					} else {
 						User user = userRepository.findById(participant.getUser().getId()).orElse(null);
 						RecommandedEmplyeeDTO recommandedEmplyee = new RecommandedEmplyeeDTO();
 						recommandedEmplyee.setUser(convertUserEntityToUserDto(user));
@@ -57,18 +58,17 @@ public class RecommandationsServiceImpl implements RecommandationsService {
 						recommandedEmplyees.put(participant.getUser().getId(), recommandedEmplyee);
 					}
 				}
-				
+
 			}
 		}
-		List<RecommandedEmplyeeDTO> recommandedEmplyeesList = new ArrayList<RecommandedEmplyeeDTO>(recommandedEmplyees.values());
-		return recommandedEmplyeesList	;
+		List<RecommandedEmplyeeDTO> recommandedEmplyeesList = new ArrayList<RecommandedEmplyeeDTO>(
+				recommandedEmplyees.values());
+		return recommandedEmplyeesList;
 	}
 
 	private UserDTO convertUserEntityToUserDto(User user) {
 		UserDTO userDto = modelMapper.map(user, UserDTO.class);
 		return userDto;
 	}
-
-	
 
 }
