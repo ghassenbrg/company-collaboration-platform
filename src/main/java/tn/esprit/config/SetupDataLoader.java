@@ -1,5 +1,6 @@
 package tn.esprit.config;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -202,9 +203,14 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 		// Set events
 		for (int i = 0; i < 50; i++) {
+			LocalTime startTime = LocalTime.of(faker.random().nextInt(1, 22), 00);
+			LocalTime endTime = startTime.plusHours(1);
 			Event newEvent = new Event();
 			newEvent.setName(faker.lorem().sentence(10));
 			newEvent.setDescription(faker.lorem().sentence(15));
+			newEvent.setUser(admin);
+			newEvent.setStartTime(startTime);
+			newEvent.setEndTime(endTime);
 			eventRepository.save(newEvent);
 		}
 		for (Event createdEvent : eventRepository.findAll()) {

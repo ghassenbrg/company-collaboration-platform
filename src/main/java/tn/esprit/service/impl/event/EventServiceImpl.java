@@ -10,6 +10,7 @@ import tn.esprit.exception.AccessDeniedException;
 import tn.esprit.exception.BadRequestException;
 import tn.esprit.model.event.Category;
 import tn.esprit.model.event.Event;
+import tn.esprit.model.event.Participant;
 import tn.esprit.model.user.User;
 import tn.esprit.payload.ApiResponse;
 import tn.esprit.payload.dto.EventDTO;
@@ -55,7 +56,9 @@ public class EventServiceImpl implements EventService {
 		List<Event> events = new ArrayList<>();
 		List<Event> allEvents = getAllEvents();
 		allEvents.forEach(event -> {
-			if (event.getUser() != null && event.getUser().getId().equals(currentUser.getId())) {
+			if (event.getUser() != null 
+					&& (event.getUser().getId().equals(currentUser.getId()) 
+							|| isParticipant(event, currentUser))) {
 				events.add(event);
 			}
 		});
@@ -115,6 +118,15 @@ public class EventServiceImpl implements EventService {
 			throw new AccessDeniedException(apiResponse);
 		}
 		eventRepository.delete(event);
+	}
+	
+	Boolean isParticipant(Event event, UserPrincipal currentUser) {
+		for (Participant participant : event.getParticipants()) {
+			if (participant.getUser().getId() == currentUser.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
