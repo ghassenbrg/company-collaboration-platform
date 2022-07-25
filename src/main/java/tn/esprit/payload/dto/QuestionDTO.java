@@ -32,5 +32,4 @@ public class QuestionDTO {
 
 	private List<PossibleValueDTO> possibleValues;
 
-	private List<QuestionResponseDTO> responses;
 }

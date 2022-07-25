@@ -3,6 +3,7 @@ package tn.esprit.service.survey;
 import java.util.List;
 
 import tn.esprit.model.survey.SurveyResponse;
+import tn.esprit.payload.dto.SurveyResponseDTO;
 
 /**
  * 
@@ -11,16 +12,19 @@ import tn.esprit.model.survey.SurveyResponse;
  */
 public interface SurveyResponseService {
 
-	SurveyResponse createResponse(SurveyResponse surveyResponse, Long surveyId);
+	SurveyResponse createResponse(SurveyResponse surveyResponse, String surveyId);
 
-	SurveyResponse getResponse(Long id, Long surveyId);
+	SurveyResponse getResponse(Long id, String surveyId);
 
-	List<SurveyResponse> getAllResponses(Long id, Long surveyId);
+	List<SurveyResponse> getAllResponses(String surveyId);
 
-	byte[] exportResponses(Long surveyId);
+	byte[] exportResponses(String surveyId);
 
-	SurveyResponse updateResponse(SurveyResponse surveyResponse, Long id, Long surveyId);
+	SurveyResponse updateResponse(SurveyResponse surveyResponse, Long id, String surveyId, String currentUsername);
 
-	void submitResponse(Long id, Long surveyId);
+	void submitResponse(Long id, String surveyId);
 
+	SurveyResponseDTO convertSurveyResponseToDto(SurveyResponse surveyResponse);
+
+	SurveyResponse convertDtoToSurveyResponse(SurveyResponseDTO surveyResponseDTO);
 }

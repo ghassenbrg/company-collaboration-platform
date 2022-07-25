@@ -18,7 +18,7 @@ public interface SurveyService {
 
 	Survey createSurveyByFile(byte[] file);
 
-	Survey getSurey(String id);
+	Survey getSurvey(String id);
 
 	byte[] exportSurvey(String id);
 

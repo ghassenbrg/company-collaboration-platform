@@ -20,6 +20,9 @@ import tn.esprit.utils.excel.helpers.ExcelHelper;
 
 public class SurveyImporter {
 
+	@Autowired
+	private SurveyService surveyService;
+
 	private SurveyImporter() {
 	}
 
@@ -40,11 +43,7 @@ public class SurveyImporter {
 		// start importing
 		cell = row.getCell(colNum++);
 		String identifier = cell.getStringCellValue();
-		// survey =
-		// surveyService.convertSurveyToDto(surveyService.getOrCreateSurvey(identifier));
-		survey = new SurveyDTO();
-		survey.setId(identifier);
-		//-------------------------------------------------------------------------------
+		survey = surveyService.convertSurveyToDto(surveyService.getOrCreateSurvey(identifier));
 		// Import Name
 		cell = row.getCell(colNum++);
 		if (cell != null) {

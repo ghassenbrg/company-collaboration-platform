@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 import tn.esprit.model.survey.Survey;
 
 @Repository
-public interface SurveyRepository extends JpaRepository<Survey, Long> {
+public interface SurveyRepository extends JpaRepository<Survey, String> {
 
 }

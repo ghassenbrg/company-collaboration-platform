@@ -18,6 +18,8 @@ public interface UserService {
 	UserSummary getCurrentUser(UserPrincipal currentUser);
 	
 	User getCurrentUserEntity(UserPrincipal currentUser);
+	
+	User getUserByName(String username);
 
 	UserIdentityAvailability checkUsernameAvailability(String username);
 

@@ -1,6 +1,5 @@
 package tn.esprit.controller.survey;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +13,8 @@ import javax.validation.Valid;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,14 +28,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tn.esprit.exception.ResourceNotFoundException;
 import tn.esprit.model.survey.QuestionType;
+import tn.esprit.model.survey.Survey;
+import tn.esprit.model.survey.SurveyResponse;
+import tn.esprit.payload.ApiResponse;
 import tn.esprit.payload.dto.PossibleValueDTO;
 import tn.esprit.payload.dto.QuestionDTO;
 import tn.esprit.payload.dto.SurveyDTO;
 import tn.esprit.payload.dto.SurveyResponseDTO;
+import tn.esprit.security.CurrentUser;
+import tn.esprit.security.UserPrincipal;
 import tn.esprit.service.survey.SurveyResponseService;
 import tn.esprit.service.survey.SurveyService;
 import tn.esprit.utils.excel.exporters.SurveyExporter;
-import tn.esprit.utils.excel.importers.SurveyImporter;
 
 /**
  * 
@@ -56,9 +61,10 @@ public class SurveyController {
 	private SurveyResponseService surveyResponseService;
 
 	@PostMapping
-	public SurveyDTO createSurvey(@Valid @RequestBody SurveyDTO surveyDTO) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<ApiResponse> createSurvey(@Valid @RequestBody SurveyDTO surveyDTO) {
+		surveyService.createSurvey(surveyService.convertDtoToSurvey(surveyDTO));
+		return new ResponseEntity<>(new ApiResponse(true, "Survey created with success!"), HttpStatus.CREATED);
+
 	}
 
 	@GetMapping(value = "/template", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -73,15 +79,15 @@ public class SurveyController {
 	}
 
 	@PostMapping("/import")
-	public SurveyDTO createSurveyByFile(@Valid @RequestBody byte[] file) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<ApiResponse> createSurveyByFile(@Valid @RequestBody byte[] file) {
+		surveyService.createSurveyByFile(file);
+		return new ResponseEntity<>(new ApiResponse(true, "Survey created with success!"), HttpStatus.CREATED);
 	}
 
 	@GetMapping("/{id}")
-	public SurveyDTO getSurey(@PathVariable(value = "id") String id) {
-		// TODO Auto-generated method stub
-		return getStaticSurvey();
+	public ResponseEntity<SurveyDTO> getSurey(@PathVariable(value = "id") String id) {
+		Survey survey = surveyService.getSurvey(id);
+		return new ResponseEntity<>(surveyService.convertSurveyToDto(survey), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{id}/export", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
@@ -100,87 +106,94 @@ public class SurveyController {
 	}
 
 	@PutMapping("/{id}")
-	public SurveyDTO updateSurvey(@Valid @RequestBody SurveyDTO surveyDTO, @PathVariable(value = "id") String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<SurveyDTO> updateSurvey(@Valid @RequestBody SurveyDTO surveyDTO,
+			@PathVariable(value = "id") String id) {
+		Survey survey = surveyService.convertDtoToSurvey(surveyDTO);
+		survey = surveyService.updateSurvey(survey, id);
+		return new ResponseEntity<>(surveyService.convertSurveyToDto(survey), HttpStatus.OK);
+
 	}
 
 	@PutMapping("/{id}/import")
-	public SurveyDTO updateSurveyByFile(@Valid @RequestBody byte[] file, @PathVariable(value = "id") String id) {
-		InputStream stream = new ByteArrayInputStream(file);
-		XSSFWorkbook workbook;
-		try {
-			workbook = new XSSFWorkbook(stream);
-			return SurveyImporter.getInstance().importSurvey(workbook);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Can't convert file to excel.");
-		}
+	public ResponseEntity<SurveyDTO> updateSurveyByFile(@Valid @RequestBody byte[] file,
+			@PathVariable(value = "id") String id) {
+		Survey survey = surveyService.updateSurveyByFile(file, id);
+		return new ResponseEntity<>(surveyService.convertSurveyToDto(survey), HttpStatus.OK);
+
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteSurvey(@PathVariable(value = "id") String id) {
-		// TODO Auto-generated method stub
+	public ResponseEntity<ApiResponse> deleteSurvey(@PathVariable(value = "id") String id) {
+		surveyService.deleteSurvey(id);
+		return new ResponseEntity<>(new ApiResponse(true, "Survey deleted with success."), HttpStatus.OK);
 
 	}
 
 	@PostMapping("/{id}/publish")
-	public void publishSurvey(@PathVariable(value = "id") String id) {
-		// TODO Auto-generated method stub
+	public ResponseEntity<ApiResponse> publishSurvey(@PathVariable(value = "id") String id) {
+		surveyService.publishSurvey(id);
+		return new ResponseEntity<>(new ApiResponse(true, "Survey published with success."), HttpStatus.OK);
 
 	}
 
 	@PostMapping("/{id}/cancel")
-	public void cancelSurvey(@PathVariable(value = "id") String id) {
-		// TODO Auto-generated method stub
+	public ResponseEntity<ApiResponse> cancelSurvey(@PathVariable(value = "id") String id) {
+		surveyService.cancelSurvey(id);
+		return new ResponseEntity<>(new ApiResponse(true, "Survey canceled with success."), HttpStatus.OK);
 
 	}
 
 	@PostMapping("/{id}/close")
-	public void closeSurvey(@PathVariable(value = "id") String id) {
-		// TODO Auto-generated method stub
+	public ResponseEntity<ApiResponse> closeSurvey(@PathVariable(value = "id") String id) {
+		surveyService.closeSurvey(id);
+		return new ResponseEntity<>(new ApiResponse(true, "Survey closed with success."), HttpStatus.OK);
 
 	}
 
 	@PostMapping("/{surveyId}/responses")
-	public SurveyResponseDTO createResponse(@Valid @RequestBody SurveyResponseDTO surveyResponseDTO,
-			@PathVariable(value = "surveyId") String surveyId) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<ApiResponse> createResponse(@Valid @RequestBody SurveyResponseDTO surveyResponseDTO,
+			@PathVariable(value = "surveyId") String surveyId, @CurrentUser UserPrincipal currentUser) {
+		surveyResponseDTO.setUsername(currentUser.getUsername());
+		surveyResponseService.createResponse(surveyResponseService.convertDtoToSurveyResponse(surveyResponseDTO),
+				surveyId);
+		return new ResponseEntity<>(new ApiResponse(true, "Survey created with success!"), HttpStatus.CREATED);
+
 	}
 
 	@GetMapping("/{surveyId}/responses/{id}")
-	public SurveyResponseDTO getResponse(@PathVariable(value = "id") String id,
+	public ResponseEntity<SurveyResponseDTO> getResponse(@PathVariable(value = "id") Long id,
 			@PathVariable(value = "surveyId") String surveyId) {
-		// TODO Auto-generated method stub
-		return null;
+		SurveyResponse surveyResponse = surveyResponseService.getResponse(id, surveyId);
+		return new ResponseEntity<>(surveyResponseService.convertSurveyResponseToDto(surveyResponse), HttpStatus.OK);
 	}
 
 	@GetMapping("/{surveyId}/responses")
-	public List<SurveyResponseDTO> getAllResponses(@PathVariable(value = "id") String id,
-			@PathVariable(value = "surveyId") String surveyId) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<List<SurveyResponseDTO>> getAllResponses(@PathVariable(value = "surveyId") String surveyId) {
+		List<SurveyResponse> surveyResponses = surveyResponseService.getAllResponses(surveyId);
+		List<SurveyResponseDTO> surveyResponseDTOs = surveyResponses.parallelStream()
+				.map(surveyResponse -> surveyResponseService.convertSurveyResponseToDto(surveyResponse)).toList();
+		return new ResponseEntity<>(surveyResponseDTOs, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{surveyId}/responses/export", produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 	public byte[] exportResponses(@PathVariable(value = "surveyId") String surveyId) {
-		// TODO Auto-generated method stub
-		return null;
+		return surveyResponseService.exportResponses(surveyId);
 	}
 
 	@PutMapping("/{surveyId}/responses/{id}")
-	public SurveyResponseDTO updateResponse(@Valid @RequestBody SurveyResponseDTO surveyResponseDTO,
-			@PathVariable(value = "id") String id, @PathVariable(value = "surveyId") String surveyId) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<SurveyResponseDTO> updateResponse(@Valid @RequestBody SurveyResponseDTO surveyResponseDTO,
+			@PathVariable(value = "id") Long id, @PathVariable(value = "surveyId") String surveyId,
+			@CurrentUser UserPrincipal currentUser) {
+		SurveyResponse surveyResponse = surveyResponseService.convertDtoToSurveyResponse(surveyResponseDTO);
+		surveyResponse = surveyResponseService.updateResponse(surveyResponse, id, surveyId, currentUser.getUsername());
+		return new ResponseEntity<>(surveyResponseService.convertSurveyResponseToDto(surveyResponse), HttpStatus.OK);
 	}
 
 	@PostMapping("/{surveyId}/responses/{id}/submit")
-	public void submitResponse(@PathVariable(value = "id") String id,
+	public ResponseEntity<ApiResponse> submitResponse(@PathVariable(value = "id") Long id,
 			@PathVariable(value = "surveyId") String surveyId) {
-		// TODO Auto-generated method stub
-
+		surveyResponseService.submitResponse(id, surveyId);
+		return new ResponseEntity<>(new ApiResponse(true, "Survey submitted with success."), HttpStatus.OK);
 	}
 
 	private SurveyDTO getStaticSurvey() {
