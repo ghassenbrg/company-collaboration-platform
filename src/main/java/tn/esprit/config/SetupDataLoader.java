@@ -24,9 +24,11 @@ import com.github.javafaker.Company;
 import com.github.javafaker.Faker;
 
 import tn.esprit.model.Geo;
+import tn.esprit.model.evaluation.Badge;
 import tn.esprit.model.event.Category;
 import tn.esprit.model.event.Event;
 import tn.esprit.model.event.Participant;
+import tn.esprit.model.forum.Post;
 import tn.esprit.model.partner.Collaboration;
 import tn.esprit.model.partner.Offre;
 import tn.esprit.model.partner.Partner;
@@ -37,9 +39,11 @@ import tn.esprit.model.user.Role;
 import tn.esprit.model.user.RoleName;
 import tn.esprit.model.user.User;
 import tn.esprit.model.user.UserAddress;
+import tn.esprit.repository.evaluation.BadgeRepository;
 import tn.esprit.repository.event.EventCategoryRepository;
 import tn.esprit.repository.event.EventRepository;
 import tn.esprit.repository.event.ParticipantRepository;
+import tn.esprit.repository.forum.PostRepository;
 import tn.esprit.repository.partner.CollaborationRepository;
 import tn.esprit.repository.partner.OffreRepository;
 import tn.esprit.repository.partner.PartnerRatingRepository;
@@ -66,6 +70,12 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private BadgeRepository badgeRepository;
+
+	@Autowired
+	private PostRepository postRepository;
+	
 	@Autowired
 	private PartnerRepository partnerRepository;
 
@@ -152,7 +162,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			collaborationRepository.save(c);
 			offreRepository.save(o);
 		}
-
+		
 		for (int i = 0; i < 100; i++) {
 			String username = faker.name().username();
 			Employee employee = new Employee(faker.name().firstName(), faker.name().lastName(),
@@ -231,7 +241,23 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 				participantRepository.save(participant);
 			}
 		}
-
+		//set posts for user fadhel
+		Employee fadhel = new Employee("Fadhel", "Nouar", "fnaouar", "mohamedelfadhel.naouar@esprit.tn", passwordEncoder.encode("fadhel123"));
+		userRepository.save(fadhel);
+		
+		for (int i = 0; i < 10; i++) {
+			Post post = new Post();
+			post.setContent(faker.lorem().paragraph());
+			post.setUser(fadhel);
+			postRepository.save(post);
+		}
+		//set badges
+		Badge badgeA = new Badge();
+		badgeA.setName("A");
+		Badge badgeB = new Badge();
+		badgeB.setName("B");
+		badgeRepository.save(badgeA);
+		badgeRepository.save(badgeB);
 		alreadySetup = true;
 	}
 
