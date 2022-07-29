@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.validation.Valid;
@@ -171,7 +172,7 @@ public class SurveyController {
 	public ResponseEntity<List<SurveyResponseDTO>> getAllResponses(@PathVariable(value = "surveyId") String surveyId) {
 		List<SurveyResponse> surveyResponses = surveyResponseService.getAllResponses(surveyId);
 		List<SurveyResponseDTO> surveyResponseDTOs = surveyResponses.parallelStream()
-				.map(surveyResponse -> surveyResponseService.convertSurveyResponseToDto(surveyResponse)).toList();
+				.map(surveyResponse -> surveyResponseService.convertSurveyResponseToDto(surveyResponse)).collect(Collectors.toList());
 		return new ResponseEntity<>(surveyResponseDTOs, HttpStatus.OK);
 	}
 
