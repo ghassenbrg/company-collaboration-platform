@@ -2,9 +2,11 @@ package tn.esprit.service.impl.event;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,8 @@ public class RecommandationsServiceImpl implements RecommandationsService {
 		for (Event event : myEvents) {
 			Duration eventDuration = Duration.between(event.getEndTime(), event.getStartTime());
 			for (Participant participant : event.getParticipants()) {
-				if (participant.getUser() != null && participant.getUser().getId() != null) {
+				if (participant.getUser() != null && participant.getUser().getId() != null
+						&& participant.getUser().getId() != currentUser.getId()) {
 					if (recommandedEmplyees.containsKey(participant.getUser().getId())) {
 						Duration totalTime = recommandedEmplyees.get(participant.getUser().getId()).getTotalTime()
 								.plus(eventDuration);
@@ -63,6 +66,9 @@ public class RecommandationsServiceImpl implements RecommandationsService {
 		}
 		List<RecommandedEmplyeeDTO> recommandedEmplyeesList = new ArrayList<RecommandedEmplyeeDTO>(
 				recommandedEmplyees.values());
+		recommandedEmplyeesList = recommandedEmplyeesList.stream().sorted((recommandedEmplye1,
+				recommandedEmplye2) -> recommandedEmplye1.getTotalTime().compareTo(recommandedEmplye2.getTotalTime()))
+				.collect(Collectors.toList());
 		return recommandedEmplyeesList;
 	}
 
