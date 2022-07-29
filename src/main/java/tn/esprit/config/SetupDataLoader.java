@@ -28,6 +28,7 @@ import tn.esprit.model.evaluation.Badge;
 import tn.esprit.model.event.Category;
 import tn.esprit.model.event.Event;
 import tn.esprit.model.event.Participant;
+import tn.esprit.model.forum.Comment;
 import tn.esprit.model.forum.Post;
 import tn.esprit.model.partner.Collaboration;
 import tn.esprit.model.partner.Offre;
@@ -250,6 +251,10 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			post.setContent(faker.lorem().paragraph());
 			post.setUser(fadhel);
 			postRepository.save(post);
+			Comment comment= new Comment(); 
+			comment.setComment(faker.lorem().paragraph());
+			comment.setUser(fadhel);
+			comment.setPost(post);
 		}
 		//set badges
 		Badge badgeA = new Badge();

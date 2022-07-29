@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/company-collaboration-platform?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password: mazzo007
+    password: 
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher 
@@ -25,7 +25,7 @@ spring:
           connectiontimeout: '5000'
           writetimeout: '5000'
     host: smtp.gmail.com
-    username: mazen.aissa@esprit.tn
+    username: mohamedelfadhel.naouar@esprit.tn
     password: 
     port: '587'
 
