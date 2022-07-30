@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import tn.esprit.model.forum.Comment;
-import tn.esprit.model.forum.Post;
+import tn.esprit.model.forums.Comment;
+import tn.esprit.model.forums.Post;
 import tn.esprit.model.user.User;
 import tn.esprit.payload.ApiResponse;
 import tn.esprit.security.CurrentUser;
 import tn.esprit.security.UserPrincipal;
-import tn.esprit.service.forum.PostService;
+import tn.esprit.service.forums.PostService;
 import tn.esprit.service.user.UserService;
 
 /**

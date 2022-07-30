@@ -16,7 +16,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import tn.esprit.model.BaseEntity;
-import tn.esprit.model.forum.Post;
+import tn.esprit.model.forums.Post;
 import tn.esprit.model.user.Employee;
 /**
  * 

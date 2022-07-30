@@ -1,15 +1,15 @@
-package tn.esprit.repository.forum;
+package tn.esprit.repository.forums;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import tn.esprit.model.forum.Comment;
+import tn.esprit.model.forums.Comment;
 
 /**
  * 
- * @author Ghassen Bargougui
+ * @author Mohamed Marzougui
  *
  */
 public interface CommentRepository extends JpaRepository<Comment, Long> {

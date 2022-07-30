@@ -1,12 +1,12 @@
-package tn.esprit.repository.forum;
+package tn.esprit.repository.forums;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import tn.esprit.model.forum.Like;
+import tn.esprit.model.forums.Like;
 
 /**
  * 
- * @author Ghassen Bargougui
+ * @author Mohamed Marzougui
  *
  */
 public interface LikeRepository extends JpaRepository<Like, Long> {

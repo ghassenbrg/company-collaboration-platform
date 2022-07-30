@@ -1,4 +1,4 @@
-package tn.esprit.model.forum;
+package tn.esprit.model.forums;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

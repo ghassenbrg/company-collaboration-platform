@@ -1,4 +1,4 @@
-package tn.esprit.model.forum;
+package tn.esprit.model.forums;
 
 import java.util.ArrayList;
 import java.util.Collections;

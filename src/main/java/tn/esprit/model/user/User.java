@@ -43,9 +43,9 @@ import tn.esprit.model.BaseEntity;
 import tn.esprit.model.event.Event;
 import tn.esprit.model.event.Participant;
 import tn.esprit.model.event.Rating;
-import tn.esprit.model.forum.Comment;
-import tn.esprit.model.forum.Like;
-import tn.esprit.model.forum.Post;
+import tn.esprit.model.forums.Comment;
+import tn.esprit.model.forums.Like;
+import tn.esprit.model.forums.Post;
 import tn.esprit.model.partner.PartnerRating;
 
 /**

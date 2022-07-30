@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import tn.esprit.exception.ResourceNotFoundException;
-import tn.esprit.model.forum.Comment;
-import tn.esprit.model.forum.Post;
-import tn.esprit.repository.forum.CommentRepository;
-import tn.esprit.repository.forum.PostRepository;
-import tn.esprit.service.forum.PostService;
+import tn.esprit.model.forums.Comment;
+import tn.esprit.model.forums.Post;
+import tn.esprit.repository.forums.CommentRepository;
+import tn.esprit.repository.forums.PostRepository;
+import tn.esprit.service.forums.PostService;
 
 /**
  * 

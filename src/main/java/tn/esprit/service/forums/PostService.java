@@ -1,13 +1,13 @@
-package tn.esprit.service.forum;
+package tn.esprit.service.forums;
 
 import java.util.List;
 
-import tn.esprit.model.forum.Comment;
-import tn.esprit.model.forum.Post;
+import tn.esprit.model.forums.Comment;
+import tn.esprit.model.forums.Post;
 
 /**
  * 
- * @author Ghassen Bargougui
+ * @author Mohamed Marzougui
  *
  */
 public interface PostService {

@@ -23,8 +23,8 @@ import tn.esprit.model.evaluation.Badge;
 import tn.esprit.model.user.Employee;
 import tn.esprit.model.user.User;
 import tn.esprit.repository.evaluation.BadgeRepository;
-import tn.esprit.repository.forum.CommentRepository;
-import tn.esprit.repository.forum.PostRepository;
+import tn.esprit.repository.forums.CommentRepository;
+import tn.esprit.repository.forums.PostRepository;
 import tn.esprit.repository.user.UserRepository;
 
 /**
