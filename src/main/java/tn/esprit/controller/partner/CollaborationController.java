@@ -35,6 +35,7 @@ import tn.esprit.service.partner.PartnerService;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/collaborations")
+@PreAuthorize("hasRole('ADMIN')")
 public class CollaborationController {
 
 	private final CollaborationService collaborationService;
@@ -42,7 +43,6 @@ public class CollaborationController {
     private final ModelMapper modelMapper;
     
 	@PostMapping("/create")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ApiResponse> createCollaboration(@Valid @RequestBody CollaborationDTO collaborationDTO) {
 		Optional<Partner> partner = partnerService.findById(collaborationDTO.getPartnerId());
 		if(!partner.isPresent()) {
@@ -55,7 +55,6 @@ public class CollaborationController {
 	}
 
 	@PutMapping("/update/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ApiResponse> updateCollaboration(@PathVariable("id") Long id,
 			@RequestBody CollaborationDTO collaborationDTO) {
 		Optional<Collaboration> collaboration = collaborationService.findById(id);
@@ -67,7 +66,6 @@ public class CollaborationController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ApiResponse> deleteCollaboration(@PathVariable("id") Long id) {
 		Collaboration collaboration = collaborationService.findById(id).orElse(null);
 		if(collaboration==null)
