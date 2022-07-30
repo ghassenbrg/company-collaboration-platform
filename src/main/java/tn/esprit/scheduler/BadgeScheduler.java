@@ -55,7 +55,7 @@ public class BadgeScheduler {
 	@Autowired
 	private Environment environment;
 
-	@Scheduled(fixedDelay = 30000) // every 30 seconds
+	//@Scheduled(fixedDelay = 30000) // every 30 seconds
 	// @Scheduled(cron = "0 0 */12 ? * *") //Every twelve hours
 	void assignBadge() {
 		List<User> allUsers = userRepository.findAll();
