@@ -1,6 +1,7 @@
 package tn.esprit.model.event;
 
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -42,6 +45,10 @@ public class Event extends BaseEntity {
 	@Size(min = 10, message = "Event Description must be minimum 10 characters")
 	private String description;
 
+	@Column(name = "day")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date day;
+	
 	@Column(name = "start_time")
 	private LocalTime startTime;
 

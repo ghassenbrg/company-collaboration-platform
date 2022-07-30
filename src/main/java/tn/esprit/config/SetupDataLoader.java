@@ -1,5 +1,7 @@
 package tn.esprit.config;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,7 +78,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 	@Autowired
 	private PostRepository postRepository;
-	
+
 	@Autowired
 	private PartnerRepository partnerRepository;
 
@@ -129,7 +131,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
 		// init faker
 		Faker faker = new Faker();
-		
+
 		// get unique logos
 		Set<String> uniqueLogos = new HashSet<>();
 		while (uniqueLogos.size() < 13) {
@@ -163,7 +165,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			collaborationRepository.save(c);
 			offreRepository.save(o);
 		}
-		
+
 		for (int i = 0; i < 100; i++) {
 			String username = faker.name().username();
 			Employee employee = new Employee(faker.name().firstName(), faker.name().lastName(),
@@ -212,7 +214,10 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			eventCategoryRepository.save(category);
 		}
 
-		// Set events
+// Set events
+		Employee employee = new Employee("marwen", "lahmer", "mlahmer", "marwen.lahmar@esprit.tn",
+				passwordEncoder.encode("123456"));
+		users.add(userRepository.save(employee));
 		for (int i = 0; i < 50; i++) {
 			LocalTime startTime = LocalTime.of(faker.random().nextInt(1, 22), 00);
 			LocalTime endTime = startTime.plusHours(1);
@@ -220,6 +225,15 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			newEvent.setName(faker.lorem().sentence(10));
 			newEvent.setDescription(faker.lorem().sentence(15));
 			newEvent.setUser(admin);
+			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
+			Date futureDate = null;
+			try {
+				futureDate = df.parse("01-08-2023");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			newEvent.setDay(faker.date().between(new Date(), futureDate));
 			newEvent.setStartTime(startTime);
 			newEvent.setEndTime(endTime);
 			eventRepository.save(newEvent);
@@ -237,26 +251,27 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 			createdEvent.setCategory(category);
 			for (int j = 1; j <= 5; j++) {
 				Participant participant = new Participant();
-				participant.setUser(users.get(faker.random().nextInt(1, 20)));
+				participant.setUser(users.get(faker.random().nextInt(80, 100)));
 				participant.setEvent(createdEvent);
 				participantRepository.save(participant);
 			}
 		}
-		//set posts for user fadhel
-		Employee fadhel = new Employee("Fadhel", "Nouar", "fnaouar", "mohamedelfadhel.naouar@esprit.tn", passwordEncoder.encode("fadhel123"));
+		// set posts for user fadhel
+		Employee fadhel = new Employee("Fadhel", "Nouar", "fnaouar", "mohamedelfadhel.naouar@esprit.tn",
+				passwordEncoder.encode("fadhel123"));
 		userRepository.save(fadhel);
-		
+
 		for (int i = 0; i < 10; i++) {
 			Post post = new Post();
 			post.setContent(faker.lorem().paragraph());
 			post.setUser(fadhel);
 			postRepository.save(post);
-			Comment comment= new Comment(); 
+			Comment comment = new Comment();
 			comment.setComment(faker.lorem().paragraph());
 			comment.setUser(fadhel);
 			comment.setPost(post);
 		}
-		//set badges
+		// set badges
 		Badge badgeA = new Badge();
 		badgeA.setName("A");
 		Badge badgeB = new Badge();

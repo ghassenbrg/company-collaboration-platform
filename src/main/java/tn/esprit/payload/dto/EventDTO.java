@@ -1,6 +1,7 @@
 package tn.esprit.payload.dto;
 
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class EventDTO {
 	private Long id;
 	private String name;
 	private String description;
+	private Date day;
 	private LocalTime startTime;
 	private LocalTime endTime;
 	private CategoryDTO category;

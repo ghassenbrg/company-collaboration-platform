@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecommandedEmplyeeDTO {
-	private Long id;
 	private UserDTO user;
 	private Duration totalTime;
 }
